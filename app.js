@@ -13,8 +13,8 @@ const questionRouter = require('./routes/Questions/questions.route');
 var app = express();
 
 // // view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'jade');
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
 
 // For parsing application/json
 app.use(express.json());
@@ -32,7 +32,6 @@ app.use('/users', usersRouter);
 app.use('/v1', authRouter);
 app.use('/v1', quizRouter);
 app.use('/v1', questionRouter);
-
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
