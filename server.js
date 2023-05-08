@@ -6,7 +6,13 @@ const server = http.createServer(app);
 const mongoose = require('mongoose');
 
 mongoose
-    .connect(process.env.DB_URL.replace('<PASSWORD>', process.env.DB_PASSWORD))
+    .connect(
+        process.env.DB_URL.replace('<PASSWORD>', process.env.DB_PASSWORD),
+        {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        }
+    )
     .then(console.log(`DB Connected`))
 
     .catch((err) => {
