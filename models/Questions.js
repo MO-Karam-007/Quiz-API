@@ -11,6 +11,10 @@ const questionSchema = new mongoose.Schema({
         enum: ['multiple_choice', 'true_false', 'open_ended'],
         required: true,
     },
+    lecture_no: {
+        type: Number,
+        required: true,
+    },
     question: {
         type: String,
         required: true,

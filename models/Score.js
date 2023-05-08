@@ -5,12 +5,12 @@ const scoreSchame = new mongoose.Schema({
         type: Number,
         default: 0,
     },
-    Quizfinal: {
+    userId: {
         ref: 'User',
         type: mongoose.Schema.Types.ObjectId,
         required: [true, 'User id required'],
     },
-    Quiz: {
+    quizId: {
         ref: 'Quiz',
         type: mongoose.Schema.Types.ObjectId,
         required: [true, 'User id required'],
@@ -19,6 +19,4 @@ const scoreSchame = new mongoose.Schema({
 
 const Score = mongoose.model('Sco`re', scoreSchame);
 
-module.exports = {
-    Score,
-};
+module.exports = Score;

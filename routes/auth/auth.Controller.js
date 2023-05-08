@@ -5,22 +5,18 @@ const { generateToken } = require('../../middlewares/jwt');
 
 exports.register = async (req, res) => {
     try {
-        const { first_name, last_name, username, email, role } = req.body;
+        const { first_name, last_name, email, role } = req.body;
         let password = req.body.password;
-        if (!(username || email || password || role || first_name || last_name))
+        if (!(email || password || role || first_name || last_name))
             throw new Error('all data requird ');
 
         let user = await User.findOne({ email });
         if (user) throw new Error('Email already exists');
 
-        user = await User.findOne({ username });
-        if (user) throw new Error('Username already exists');
-
         password = await bcrypt.hash(password, 10);
         console.log(password);
 
         user = await User.create({
-            username,
             email,
             role,
             password,

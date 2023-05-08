@@ -5,7 +5,7 @@ const dashSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
-    Quizfinal: {
+    quizId: {
         ref: 'Quiz',
         type: mongoose.Schema.Types.ObjectId,
         required: [true, 'User id required'],
@@ -14,6 +14,4 @@ const dashSchema = new mongoose.Schema({
 
 const Dashboard = mongoose.model('Dashboard', dashSchema);
 
-module.exports = {
-    Dashboard,
-};
+module.exports = Dashboard;

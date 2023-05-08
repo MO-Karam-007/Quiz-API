@@ -23,10 +23,12 @@ exports.getQuizQues = async (req, res) => {
 };
 exports.questionsBank = async (req, res) => {
     try {
-        const questions = await Question.find();
+        let lecture_no = req.body.lecture_no;
+        console.log(req.body.lecture_no);
+        const questions = await Question.find({ lecture_no });
 
         res.json({
-            quizes: questions,
+            questions,
         });
     } catch (error) {
         res.status(401).json({
@@ -36,10 +38,17 @@ exports.questionsBank = async (req, res) => {
 };
 exports.createQues = async (req, res) => {
     try {
-        const { type, question, correctAnswer, maxLength, options } = req.body;
-        if (!type) {
+        const {
+            lecture_no,
+            type,
+            question,
+            correctAnswer,
+            maxLength,
+            options,
+        } = req.body;
+        if (!type || !lecture_no) {
             throw new Error(
-                'Select question type (multiple choice, true false, open ended )'
+                'Select question type (multiple choice, true false, open ended ) and select lecture number'
             );
         }
 
@@ -68,6 +77,7 @@ exports.createQues = async (req, res) => {
             maxLength,
             options,
             quizId: req.quiz._id,
+            lecture_no,
         });
 
         res.json({
@@ -79,3 +89,9 @@ exports.createQues = async (req, res) => {
         });
     }
 };
+
+// exports.answers = async (req,res)=>{
+//     const answers = req.body.answer;
+//     const questionId =
+//     const question = await Question.find({})
+// }

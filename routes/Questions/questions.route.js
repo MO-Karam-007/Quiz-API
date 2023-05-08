@@ -7,6 +7,7 @@ quizRouter
     .get(verfyQuizToken, quesController.getQuizQues)
     .post(verfyQuizToken, quesController.createQues);
 
+//NEW
 quizRouter.route('/questionsbank').get(quesController.questionsBank);
 
 module.exports = quizRouter;
