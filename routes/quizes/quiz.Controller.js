@@ -32,15 +32,15 @@ exports.getUserQuiz = async (req, res) => {
 
 exports.createQuiz = async (req, res) => {
     if (req.user.role != 'instructor') throw new Error('You are not a teacher');
-    console.log(`User `, req.user);
     try {
-        const { description, title, photo } = req.body;
+        const { description, title, photo, type } = req.body;
         const createdBy = req.user._id;
         const quiz = await Quiz.create({
             description,
             title,
             photo,
             createdBy,
+            type,
         });
 
         const token = jwt.sign({ _id: quiz._id }, process.env.JWT_KEY, {
@@ -58,3 +58,5 @@ exports.createQuiz = async (req, res) => {
         });
     }
 };
+
+

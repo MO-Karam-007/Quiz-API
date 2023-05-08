@@ -4,6 +4,10 @@ const quizSchema = new mongoose.Schema({
         type: String,
         requied: true,
     },
+    type: {
+        type: String,
+        enum: ['quiz', 'final', 'mid_term'],
+    },
     description: {
         type: String,
         requied: true,

@@ -21,7 +21,19 @@ exports.getQuizQues = async (req, res) => {
         });
     }
 };
+exports.questionsBank = async (req, res) => {
+    try {
+        const questions = await Question.find();
 
+        res.json({
+            quizes: questions,
+        });
+    } catch (error) {
+        res.status(401).json({
+            msg: error.message,
+        });
+    }
+};
 exports.createQues = async (req, res) => {
     try {
         const { type, question, correctAnswer, maxLength, options } = req.body;

@@ -9,7 +9,7 @@ var usersRouter = require('./routes/users');
 var authRouter = require('./routes/auth/auth.route');
 const quizRouter = require('./routes/quizes/quiz.route');
 const questionRouter = require('./routes/Questions/questions.route');
-
+const cors = require('cors');
 var app = express();
 
 // // view engine setup
@@ -18,6 +18,7 @@ app.set('view engine', 'jade');
 
 // For parsing application/json
 app.use(express.json());
+app.use(cors());
 
 // For parsing application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
