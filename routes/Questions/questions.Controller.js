@@ -2,21 +2,19 @@ const Question = require('../../models/Questions');
 
 exports.getQuizQues = async (req, res) => {
     try {
-        console.log(`req`, req.quiz);
-        const quesId = req.quiz._id;
-        const ques = await Question.find({ quesId });
+        const quizId = req.quiz._id;
+        const ques = await Question.find({ quizId });
+
         if (ques.length === 0) {
             return res.send({
                 msg: 'No questions yet',
-                token: quiz.token,
             });
         }
+        console.log(`Lol`);
 
         res.json({
             quizes: ques,
         });
-
-        res.send('Done');
     } catch (error) {
         res.status(401).json({
             msg: error.message,

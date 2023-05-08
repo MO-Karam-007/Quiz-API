@@ -5,9 +5,9 @@ const { generateToken } = require('../../middlewares/jwt');
 
 exports.register = async (req, res) => {
     try {
-        const { username, email, role } = req.body;
+        const { first_name, last_name, username, email, role } = req.body;
         let password = req.body.password;
-        if (!(username || email || password || role))
+        if (!(username || email || password || role || first_name || last_name))
             throw new Error('all data requird ');
 
         let user = await User.findOne({ email });
@@ -24,6 +24,8 @@ exports.register = async (req, res) => {
             email,
             role,
             password,
+            first_name,
+            last_name,
         });
 
         const token = generateToken(user._id, user.role);
