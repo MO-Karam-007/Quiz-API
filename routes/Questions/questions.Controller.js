@@ -2,6 +2,7 @@ const Question = require('../../models/Questions');
 
 exports.getQuizQues = async (req, res) => {
     try {
+        console.log(`req`, req.quiz);
         const quesId = req.quiz._id;
         const ques = await Question.find({ quesId });
         if (ques.length === 0) {
@@ -39,7 +40,7 @@ exports.createQues = async (req, res) => {
                 );
             }
         } else if (type == 'true_false') {
-            if (typeof type != 'boolean') {
+            if (typeof correctAnswer != 'boolean') {
                 throw new Error(
                     'Provide a valid boolean answer for true/false questions'
                 );
