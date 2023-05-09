@@ -15,7 +15,7 @@ exports.getUserQuiz = async (req, res) => {
         const createdBy = req.user._id;
         const quiz = await Quiz.find({ createdBy });
         const token = jwt.sign({ _id: quiz._id }, process.env.JWT_KEY, {
-            expiresIn: '2h',
+            // expiresIn: '2h',
         });
 
         quiz.token = token;
@@ -73,7 +73,7 @@ exports.createQuiz = async (req, res) => {
         });
 
         const token = jwt.sign({ _id: quiz._id }, process.env.JWT_KEY, {
-            expiresIn: '2h',
+            // expiresIn: '2h',
         });
         quiz.token = token;
         res.json({
