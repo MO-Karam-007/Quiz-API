@@ -9,6 +9,8 @@ quizRouter
     .post(verfyToken, quizController.createQuiz);
 
 quizRouter.route('/quizbycategory').get(quizController.getQuizViaCategory);
+
+// Quiz 
 quizRouter.route('/test/:quizId').get(quizController.getQuiz);
 
 quizRouter.route('/last_exam').get(quizController.getLastExam);

@@ -22,7 +22,6 @@ exports.getUserQuiz = async (req, res) => {
         if (quiz.length === 0) {
             return res.send({
                 msg: 'No quizzes found for the specified creator',
-                token: quiz.token,
             });
         }
 
@@ -94,10 +93,26 @@ exports.getQuiz = async (req, res) => {
         const quizId = req.params.quizId;
         console.log(quizId);
 
-        const quiz = await Question.find({ quizId }).populate('quizId');
+        const questtions = await Question.find({ quizId }).populate('quizId');
+        if (questtions.length === 0) {
+            throw new Error('No questions found for the specified quiz ID');
+        }
+
+        const formatQuestions = questtions.map((question) => {
+            return {
+                _id: question._id,
+                question: question.question,
+                options: question.options,
+                correct_answer: question.correctAnswer,
+                lecture_no: question.lecture_no,
+            };
+        });
 
         res.json({
-            quiz,
+            title: questtions[0].quizId['title'],
+            category: questtions[0].quizId['category'],
+            description: questtions[0].quizId['description'],
+            questions: formatQuestions,
         });
     } catch (error) {
         res.status(401).json({
