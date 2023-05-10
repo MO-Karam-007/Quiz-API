@@ -1,4 +1,4 @@
-var QRCode = require('qrcode');
+const QRCode = require('qrcode');
 
 async function generateQRCode(req, res) {
     try {
@@ -13,8 +13,8 @@ async function generateQRCode(req, res) {
         const qrCodeDataURI = await QRCode.toDataURL(data, options);
         // image = qrCodeDataURI.replace(/^data:image\/png;base64,/, '');
 
-        res.setHeader('Content-Type', 'image/png');
-        res.send(Buffer.from(qrCodeDataURI, 'base64'));
+        // res.setHeader('Content-Type', 'image/png');
+        res.send(qrCodeDataURI);
 
         // res.send(image);
     } catch (error) {
