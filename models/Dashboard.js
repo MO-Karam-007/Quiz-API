@@ -1,14 +1,17 @@
 const mongoose = require('mongoose');
 
 const dashSchema = new mongoose.Schema({
-    totalScore: {
-        type: Number,
-        default: 0,
+    score: {
+        ref: 'Score',
+        type: mongoose.Schema.Types.ObjectId,
     },
     quizId: {
         ref: 'Quiz',
         type: mongoose.Schema.Types.ObjectId,
-        required: [true, 'User id required'],
+    },
+    user: {
+        ref: 'User',
+        type: mongoose.Schema.Types.ObjectId,
     },
 });
 
