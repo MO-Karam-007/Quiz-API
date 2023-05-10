@@ -4,9 +4,8 @@ const answerController = require('./answers.Controller');
 const { verfyToken } = require('../../middlewares/jwt');
 answerRouter
     .route('/:quizId/answer')
-    .post(verfyToken, answerController.getAnswers)
-    // .post(verfyToken, quizController.answers);
-    .get();
+    .post(verfyToken, answerController.getAnswers);
+// .post(verfyToken, quizController.answers);
 
 // quizRouter.route('/quizbycategory').get(quizController.getQuizViaCategory);
 
