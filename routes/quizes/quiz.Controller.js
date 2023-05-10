@@ -105,6 +105,7 @@ exports.getQuiz = async (req, res) => {
                 options: question.options,
                 correct_answer: question.correctAnswer,
                 lecture_no: question.lecture_no,
+                type: question.type,
             };
         });
 

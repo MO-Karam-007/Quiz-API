@@ -1,15 +1,19 @@
-const Question = require('../../models/Questions');
 const Submit = require('../../models/Submit');
 const axios = require('axios');
-const Score = require('../../models/Score');
 const Quiz = require('../../models/Quiz');
-
+const Score = require('../../models/Score');
 exports.getAnswers = async (req, res) => {
     try {
-        const answers = req.body.answers;
+        const options = {
+            upsert: true,
+            new: true, // Return the updated document
+        };
         const quizId = req.params.quizId;
+        const submitedAnswers = [];
+
+        let score = 0;
         const userId = req.user._id;
-        console.log(`answers`, answers);
+        const answers = req.body.answers;
         const quiz = await Quiz.findById(quizId);
         if (!quiz) {
             throw new Error('Quiz not found');
@@ -19,27 +23,61 @@ exports.getAnswers = async (req, res) => {
             `http://localhost:5050/v1/test/${quizId}`
         );
         const { questions } = fullQuiz.data;
-        console.log(`questions.length`, questions.length);
+
         for (let i = 0; i < questions.length; i++) {
             const questionId = questions[i]._id;
             const answer = answers[i];
-            console.log(`questionId`, questionId);
-            console.log(`answer`, answer);
-            // Create a new Answer document for each question and answer
-            const newAnswer = new Submit.create({
-                userId,
-                quizId,
-                questionId,
-                answer,
-            });
-            await newAnswer.save();
+
+            if (
+                questions[i].type == 'true_false' ||
+                questions[i].type == 'multiple_choice'
+            ) {
+                console.log(`I am in`);
+                if (questions[i].correct_answer === JSON.parse(answer)) {
+                    score++;
+                }
+
+                // Create a new Answer document for each question and answer'
+                const filters = {
+                    userId,
+                    quizId,
+                    questionId,
+                };
+                const update = {
+                    userId,
+                    quizId,
+                    questionId,
+                    answer,
+                };
+
+                const newanswer = await Submit.findOneAndUpdate(
+                    filters,
+                    update,
+                    options
+                );
+                submitedAnswers.push(newanswer);
+            } else {
+                score++;
+            }
         }
-        console.log(`Out`);
+
+        await Score.findOneAndUpdate(
+            { userId, quizId },
+            { userId, quizId, score },
+            options
+        );
+
         res.json({
-            newAnswer,
+            score,
+            submitedAnswers,
         });
-    } catch (error) {}
+    } catch (error) {
+        res.status(401).json({
+            msg: error.message,
+        });
+    }
 };
+
 // exports.getAnswers = async (req, res) => {
 //     try {
 //         const quizId = req.params.quizId;
