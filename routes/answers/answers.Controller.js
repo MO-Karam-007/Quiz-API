@@ -20,7 +20,7 @@ exports.getAnswers = async (req, res) => {
         }
 
         const fullQuiz = await axios.get(
-            `http://localhost:5050/v1/test/${quizId}`
+            `https://good-lime-horse-robe.cyclic.app/v1/test/${quizId}`
         );
         const { questions } = fullQuiz.data;
 
