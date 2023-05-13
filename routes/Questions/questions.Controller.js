@@ -1,5 +1,5 @@
 const Question = require('../../models/Questions');
-
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 exports.getQuizQues = async (req, res) => {
     try {
         const quizId = req.quiz._id;
@@ -24,7 +24,7 @@ exports.getQuizQues = async (req, res) => {
 exports.questionsBank = async (req, res) => {
     try {
         let lecture_no = req.body.lecture_no;
-        console.log(req.body.lecture_no);
+
         const questions = await Question.find({ lecture_no });
 
         res.json({
@@ -36,6 +36,7 @@ exports.questionsBank = async (req, res) => {
         });
     }
 };
+
 exports.createQues = async (req, res) => {
     try {
         const {
@@ -90,6 +91,20 @@ exports.createQues = async (req, res) => {
     }
 };
 
+exports.deleteQuestion = async (req, res) => {
+    try {
+        const _id = req.params._id;
+        console.log(`Delete method`);
+        const deleted = await Question.deleteOne({ _id });
+        res.json({
+            deleted,
+        });
+    } catch (error) {
+        res.json({
+            msg: "The question didn't delete",
+        });
+    }
+};
 // exports.answers = async (req,res)=>{
 //     const answers = req.body.answer;
 //     const questionId =
