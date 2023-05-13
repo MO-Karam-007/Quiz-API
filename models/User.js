@@ -16,6 +16,13 @@ const userSchema = new mongoose.Schema({
         type: String,
         unique: true,
         required: true,
+        validate: {
+            validator: function (value) {
+                const reqExp = /^[^s@]+@[^s@]+\.[^s@]+$/;
+                return reqExp.test(value);
+            },
+            message: 'not valid email',
+        },
     },
     password: {
         type: String,

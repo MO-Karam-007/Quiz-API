@@ -21,7 +21,9 @@
     "mongodb": "3.0",
     "mongoose": "^7.1.0",
     "morgan": "~1.9.1",
-    "qrcode": "^1.5.3"
+    "qrcode": "^1.5.3",
+    "socket.io": "^4.6.1",
+    "validator": "^13.9.0"
   },
   "engines": {
     "node": "18.x"
