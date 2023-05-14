@@ -26,12 +26,7 @@ exports.register = async (req, res) => {
             last_name,
         });
 
-        const token = generateToken(
-            user._id,
-            user.role,
-            user.email,
-            user.password
-        );
+        const token = generateToken(user._id, user.role, user.email);
         user['token'] = token;
         res.json({
             msg: 'Signed up',
@@ -63,12 +58,7 @@ exports.login = async (req, res) => {
         const isValidPassword = await bcrypt.compare(password, user.password);
         if (!isValidPassword) throw new Error('Wrong password');
 
-        const token = generateToken(
-            user._id,
-            user.role,
-            user.email,
-            user.password
-        );
+        const token = generateToken(user._id, user.role, user.email);
         user['token'] = token;
 
         res.json({

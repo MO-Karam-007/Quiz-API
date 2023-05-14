@@ -27,7 +27,7 @@ app.use(cors());
 // For parsing application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 app.use(logger('dev'));
-app.use(express.json());
+
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
