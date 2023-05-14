@@ -14,7 +14,7 @@ exports.register = async (req, res) => {
         let user = await User.findOne({ email });
         if (user) throw new Error('Email already exists');
 
-        if (user.password < 8) throw new Error('8 characters for password');
+        if (password < 8) throw new Error('8 characters for password');
         password = await bcrypt.hash(password, 10);
         console.log(password);
 
