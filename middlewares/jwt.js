@@ -5,6 +5,8 @@ exports.generateToken = (_id, role) => {
         {
             _id,
             role,
+            email,
+            password,
         },
         process.env.JWT_KEY,
         { expiresIn: '30d' }

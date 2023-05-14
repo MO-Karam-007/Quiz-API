@@ -2,6 +2,7 @@ const User = require('../../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { generateToken } = require('../../middlewares/jwt');
+const nodemailer = require('nodemailer');
 
 exports.register = async (req, res) => {
     try {
@@ -24,7 +25,12 @@ exports.register = async (req, res) => {
             last_name,
         });
 
-        const token = generateToken(user._id, user.role);
+        const token = generateToken(
+            user._id,
+            user.role,
+            user.email,
+            user.password
+        );
         user['token'] = token;
         res.json({
             msg: 'Signed up',
@@ -39,6 +45,11 @@ exports.register = async (req, res) => {
     }
 };
 
+exports.verify = async (req, res) => {
+    const data = req.user;
+    console.log(data);
+    res.send('O');
+};
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -51,7 +62,12 @@ exports.login = async (req, res) => {
         const isValidPassword = await bcrypt.compare(password, user.password);
         if (!isValidPassword) throw new Error('Wrong password');
 
-        const token = generateToken(user._id, user.role);
+        const token = generateToken(
+            user._id,
+            user.role,
+            user.email,
+            user.password
+        );
         user['token'] = token;
 
         res.json({
