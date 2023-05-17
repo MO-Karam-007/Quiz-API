@@ -6,7 +6,7 @@ const nodemailer = require('nodemailer');
 
 exports.register = async (req, res) => {
     try {
-        const { first_name, last_name, email, role, photo } = req.body;
+        const { first_name, last_name, email, role } = req.body;
         let password = req.body.password;
         var stCode = Math.floor(Math.random() * 10000);
         if (!(email || password || role || first_name || last_name))
@@ -15,18 +15,13 @@ exports.register = async (req, res) => {
         let user = await User.findOne({ email });
         if (user) throw new Error('Email already exists');
 
-        let newCode = await User.find({ stCode });
-        if (newCode) {
-            stCode = stCode + Math.floor(Math.random() * 100);
-        }
-
         if (password.length < 8) throw new Error('8 characters for password');
 
         password = await bcrypt.hash(password, 10);
 
         const userObj = {
-            email,
             role,
+            email,
             password,
             first_name,
             last_name,
