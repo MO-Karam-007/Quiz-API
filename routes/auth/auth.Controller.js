@@ -26,14 +26,14 @@ exports.register = async (req, res) => {
             first_name,
             last_name,
             ...(role === 'student' && { stCode }),
-        })
-            .then((codeLol) => {
-                return verify(first_name, email);
-            })
-            .catch((error) => {
-                // Handle any errors that occurred during user creation or verification
-                console.error('Error Mailing:', error);
-            });
+        });
+        // .then((codeLol) => {
+        //     return verify(first_name, email);
+        // })
+        // .catch((error) => {
+        //     // Handle any errors that occurred during user creation or verification
+        //     console.error('Error Mailing:', error);
+        // });
 
         console.log(`2`);
         const token = generateToken(user._id, user.role, user.email, code);
