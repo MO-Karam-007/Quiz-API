@@ -9,7 +9,7 @@ exports.register = async (req, res) => {
         const { first_name, last_name, email, role } = req.body;
         let password = req.body.password;
         var stCode = Math.floor(Math.random() * 10000);
-        const code = Math.floor(Math.random() * 100000);
+        // const code = Math.floor(Math.random() * 100000);
         if (!(email || password || role || first_name || last_name))
             throw new Error('all data requird ');
 
@@ -27,16 +27,16 @@ exports.register = async (req, res) => {
             first_name,
             last_name,
             ...(role === 'student' && { stCode }),
-        })
-            .then((codeLol) => {
-                return verify(first_name, email);
-            })
-            .catch((error) => {
-                // Handle any errors that occurred during user creation or verification
-                console.error('Error Mailing:', error);
-            });
+        });
+        // .then((codeLol) => {
+        //     return verify(first_name, email);
+        // })
+        // .catch((error) => {
+        //     // Handle any errors that occurred during user creation or verification
+        //     console.error('Error Mailing:', error);
+        // });
 
-        const token = generateToken(user._id, user.role, user.email, code);
+        const token = generateToken(user._id, user.role, user.email);
         user['token'] = token;
 
         res.json({
