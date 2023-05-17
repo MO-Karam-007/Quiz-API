@@ -26,8 +26,7 @@ exports.register = async (req, res) => {
             password,
             first_name,
             last_name,
-            // ...(role === 'student' && { stCode }),
-            stCode,
+            ...(role === 'student' && { stCode }),
         });
         console.log(`lLL222`);
 
