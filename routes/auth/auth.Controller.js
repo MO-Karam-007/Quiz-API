@@ -18,7 +18,7 @@ exports.register = async (req, res) => {
         if (password.length < 8) throw new Error('8 characters for password');
 
         password = await bcrypt.hash(password, 10);
-
+        console.log(`1`);
         user = await User.create({
             role,
             email,
@@ -27,12 +27,12 @@ exports.register = async (req, res) => {
             last_name,
             ...(role === 'student' && { stCode }),
         });
-
+        console.log(`2`);
         const code = verify(first_name, email);
-
+        console.log(`2`);
         const token = generateToken(user._id, user.role, user.email, code);
         user['token'] = token;
-
+        console.log(`4`);
         res.json({
             msg: 'Signed up',
             user,
