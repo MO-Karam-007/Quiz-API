@@ -1,12 +1,11 @@
 const jwt = require('jsonwebtoken');
 
-exports.generateToken = (_id, role, email, code) => {
+exports.generateToken = (_id, role, email) => {
     return jwt.sign(
         {
             _id,
             role,
             email,
-            code,
         },
         process.env.JWT_KEY,
         { expiresIn: '30d' }

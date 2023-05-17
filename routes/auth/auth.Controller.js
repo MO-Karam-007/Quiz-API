@@ -36,7 +36,7 @@ exports.register = async (req, res) => {
         // });
 
         console.log(`2`);
-        const token = generateToken(user._id, user.role, user.email, code);
+        const token = generateToken(user._id, user.role, user.email);
         user['token'] = token;
         console.log(`4`);
         res.json({
