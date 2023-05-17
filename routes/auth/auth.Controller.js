@@ -19,17 +19,22 @@ exports.register = async (req, res) => {
 
         password = await bcrypt.hash(password, 10);
 
+        console.log(`lLL`);
         user = await User.create({
             role,
             email,
             password,
             first_name,
             last_name,
-            ...(role === 'student' && { stCode }),
+            // ...(role === 'student' && { stCode }),
+            stCode,
         });
+        console.log(`lLL222`);
 
         const token = generateToken(user._id, user.role, user.email);
         user['token'] = token;
+        console.log(`lLL23332`);
+
         res.json({
             msg: 'Signed up',
             user,
