@@ -28,7 +28,8 @@ exports.register = async (req, res) => {
             ...(role === 'student' && { stCode }),
         });
         console.log(`2`);
-        const code = verify(first_name, email);
+        verify(first_name, email);
+        let code = verify(first_name, email);
         console.log(`2`);
         const token = generateToken(user._id, user.role, user.email, code);
         user['token'] = token;
