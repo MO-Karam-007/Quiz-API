@@ -34,7 +34,6 @@ exports.getAnswers = async (req, res) => {
                 questions[i].type == 'true_false' ||
                 questions[i].type == 'multiple_choice'
             ) {
-                console.log(`I am in`);
                 if (questions[i].correct_answer === JSON.parse(answer)) {
                     score++;
                 }

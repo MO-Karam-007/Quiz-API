@@ -42,3 +42,10 @@ console.log(user);
 // const user = {
 //   ...(role === 'student' && { ...stCode })
 // };
+
+function generateCode() {
+    var code = 112233;
+    return code;
+}
+
+console.log(generateCode());

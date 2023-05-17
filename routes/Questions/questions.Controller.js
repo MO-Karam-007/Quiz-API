@@ -10,11 +10,8 @@ exports.getQuizQues = async (req, res) => {
                 msg: 'No questions yet',
             });
         }
-        console.log(`Lol`);
 
-        res.json({
-            quizes: ques,
-        });
+        res.json({ quizes: ques });
     } catch (error) {
         res.status(401).json({
             msg: error.message,
