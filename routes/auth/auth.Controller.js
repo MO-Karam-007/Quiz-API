@@ -19,16 +19,14 @@ exports.register = async (req, res) => {
 
         password = await bcrypt.hash(password, 10);
 
-        const userObj = {
+        user = await User.create({
             role,
             email,
             password,
             first_name,
             last_name,
             ...(role === 'student' && { stCode }),
-        };
-
-        user = await User.create(userObj);
+        });
 
         const token = generateToken(user._id, user.role, user.email);
         user['token'] = token;
