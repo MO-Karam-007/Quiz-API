@@ -41,7 +41,7 @@ exports.register = async (req, res) => {
 
         res.json({
             msg: 'Signed up',
-            user,
+            user: user,
             token: user['token'],
         });
     } catch (error) {
