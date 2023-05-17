@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node  server.js",
+    "test": "nodemon  test.js",
     "rapid": "nodemon run server.js",
     "qr": "cd ./utils && nodemon qr.js"
   },

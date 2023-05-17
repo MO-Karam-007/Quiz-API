@@ -5,5 +5,5 @@ const { verfyToken } = require('../../middlewares/jwt');
 authRouter.route('/signup').post(authController.register);
 authRouter.route('/login').post(authController.login);
 
-authRouter.route('/verify_user').post(verfyToken, authController.verify);
+authRouter.route('/verify_user').post(verfyToken,authController.verify);
 module.exports = authRouter;

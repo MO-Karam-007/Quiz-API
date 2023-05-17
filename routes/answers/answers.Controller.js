@@ -24,6 +24,8 @@ exports.getAnswers = async (req, res) => {
         );
         const { questions } = fullQuiz.data;
 
+        
+
         for (let i = 0; i < questions.length; i++) {
             const questionId = questions[i]._id;
             const answer = answers[i];
@@ -56,8 +58,9 @@ exports.getAnswers = async (req, res) => {
                     options
                 );
                 submitedAnswers.push(newanswer);
-            } else {
-                score++;
+            } else if (questions[i].type == 'open_ended') {
+                // answer
+                
             }
         }
 
