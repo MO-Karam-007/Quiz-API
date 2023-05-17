@@ -50,14 +50,11 @@ exports.register = async (req, res) => {
 exports.verify = async (req, res) => {
     try {
         console.log(req.user);
+
         const code = Math.floor(Math.random() * 100000);
         const output = `
         <h1>MK</h1>
-        <p>Hi, ${
-            req.body.name.split(' ')
-                ? req.body.name.split(' ')[0]
-                : req.body.name
-        }</p>
+        <p>Hi, ${req.user.role}</p>
         <p>Please use the following code to verify your login: ${code}</p>
         <ul>  
         <li>Thanks for your time,</li>
@@ -84,7 +81,7 @@ exports.verify = async (req, res) => {
         // setup email data with unicode symbols
         let mailOptions = {
             from: process.env.EMAIL, // sender address
-            to: 'mkcoder66@gmail.com', // list of receivers
+            to: req.user.email, // list of receivers
             subject: 'Quiz verification Code', // Subject line
             text: 'Hello,', // plain text body
             html: output, // html body
