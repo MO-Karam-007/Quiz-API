@@ -53,7 +53,6 @@ exports.register = async (req, res) => {
 
 exports.verify = async (req, res) => {
     try {
-        console.log(req.user);
         const email = req.user.email;
         const code = Math.floor(Math.random() * 100000);
         const output = `
@@ -104,6 +103,7 @@ exports.verify = async (req, res) => {
                 );
             }
         });
+        res.send('Email sended');
     } catch (error) {
         res.json({
             status: 'fail',
