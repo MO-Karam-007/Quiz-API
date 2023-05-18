@@ -3,7 +3,7 @@ const User = require('../../models/User');
 const bcrypt = require('bcryptjs');
 const { generateToken } = require('../../middlewares/jwt');
 const { verify } = require('../../middlewares/verificationCode');
-
+const nodemailer = require('nodemailer');
 exports.register = async (req, res) => {
     try {
         const { first_name, last_name, email, role } = req.body;
@@ -53,6 +53,7 @@ exports.register = async (req, res) => {
 
 exports.verify = async (req, res) => {
     try {
+        console.log(req.user);
         const email = req.user.email;
         const code = Math.floor(Math.random() * 100000);
         const output = `
