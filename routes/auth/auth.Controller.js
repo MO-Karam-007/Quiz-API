@@ -101,9 +101,10 @@ exports.verify = async (req, res) => {
                     'Preview URL: %s',
                     nodemailer.getTestMessageUrl(info)
                 );
+                res.send('Email sended');
             }
         });
-        res.send('Email sended');
+        // res.send('Email sended');
     } catch (error) {
         res.json({
             status: 'fail',
