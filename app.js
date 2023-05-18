@@ -33,7 +33,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-
+console.log(`ROUTES`);
 app.use('/v1', authRouter);
 app.use('/v1', quizRouter);
 app.use('/v1', questionRouter);

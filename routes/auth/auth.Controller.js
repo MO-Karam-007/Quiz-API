@@ -51,7 +51,7 @@ exports.register = async (req, res) => {
     }
 };
 
-exports.verify = async (req, res) => {
+exports.emailVerify = (req, res) => {
     try {
         console.log(`lol`);
         const email = req.user.email;
@@ -66,7 +66,7 @@ exports.verify = async (req, res) => {
             </ul>
             
     `;
-
+console.log(`Lol2`);
         // create reusable transporter object using the default SMTP transport
         let transporter = nodemailer.createTransport({
             host: process.env.HOST,
