@@ -54,7 +54,6 @@ exports.register = async (req, res) => {
 exports.emailVerify = (req, res) => {
     try {
         console.log(`lol`);
-        const email = req.user.email;
         const code = Math.floor(Math.random() * 100000);
         const output = `
             <h1>MK</h1>
@@ -66,7 +65,9 @@ exports.emailVerify = (req, res) => {
             </ul>
             
     `;
-console.log(`Lol2`);
+        console.log(typeof req.user.email);
+
+        console.log(`Lol2`);
         // create reusable transporter object using the default SMTP transport
         let transporter = nodemailer.createTransport({
             host: process.env.HOST,
@@ -81,16 +82,20 @@ console.log(`Lol2`);
             //     rejectUnauthorized: false,
             // },
         });
+        // console.log(req.user.email);
+        // const e_mail = req.user.email;
+        // console.log(e_mail);
 
         // setup email data with unicode symbols
         let mailOptions = {
             from: process.env.EMAIL, // sender address
-            to: email, // list of receivers
+            to: 'mkcoder66@gmail.com', // list of receivers
             subject: 'Quiz verification Code', // Subject line
             text: 'Hello,', // plain text body
             html: output, // html body
         };
 
+        console.log(`Well`);
         // send mail with defined transport object
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
