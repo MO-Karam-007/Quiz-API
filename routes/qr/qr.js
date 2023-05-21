@@ -11,6 +11,7 @@ async function generateQRCode(req, res) {
             margin: 1, // White margin around the QR code
         };
 
+        console.log(`ddd`);
         // Generate the QR code as a Data URI
         const qrCodeDataURI = await QRCode.toDataURL(data1, options);
         // image = qrCodeDataURI.replace(/^data:image\/png;base64,/, '');
