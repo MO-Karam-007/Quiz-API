@@ -28,6 +28,12 @@ exports.register = async (req, res) => {
         if (password.length < 8)
             throw new Error('8 characters for password at least 88');
 
+        const comparePasswords = await bcrypt.compare(
+            password,
+            passwordConfirm
+        );
+        if (!comparePasswords) throw new Error('password not the same');
+
         user = await User.create({
             role,
             email,
