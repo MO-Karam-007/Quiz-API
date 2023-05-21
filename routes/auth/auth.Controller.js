@@ -11,15 +11,16 @@ exports.register = async (req, res) => {
 
         var stCode = Math.floor(Math.random() * 10000);
         // const code = Math.floor(Math.random() * 100000);
+
         if (
-            !email &&
-            !password &&
-            !role &&
-            !passwordConfirm &&
-            !first_name &&
+            !email ||
+            !password ||
+            !role ||
+            !passwordConfirm ||
+            !first_name ||
             !last_name
         ) {
-            throw new Error('all data requird ');
+            throw new Error('all data requird');
         }
         let user = await User.findOne({ email });
         if (user) throw new Error('Email already exists');
