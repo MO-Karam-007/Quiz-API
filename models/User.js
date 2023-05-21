@@ -34,8 +34,7 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        minlength: 8,
-        message: 'Password must be at least 8 characters long',
+        minlength: [8, 'Password must be at least 8 characters long'],
         select: false,
     },
     passwordConfirm: {
@@ -73,7 +72,7 @@ const userSchema = new mongoose.Schema({
 userSchema.pre('save', async function (next) {
     // if PASSWORD modified this method will work
     if (!this.isModified('password')) return next();
-    this.password = await bcrypt.hash(password, 10);
+    this.password = await bcrypt.hash(this.password, 10);
 
     this.passwordConfirm = undefined;
     next();
