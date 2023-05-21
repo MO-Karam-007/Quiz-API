@@ -26,7 +26,8 @@ exports.register = async (req, res) => {
         let user = await User.findOne({ email });
         if (user) throw new Error('Email already exists');
 
-        if (password.length < 8) throw new Error('8 characters for password');
+        if (password.length < 8)
+            throw new Error('8 characters for password at least 88');
 
         user = await User.create({
             role,
