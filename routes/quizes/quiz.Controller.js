@@ -1,5 +1,5 @@
 const Quiz = require('../../models/Quiz');
-const { generateToken } = require('../../middlewares/jwt');
+
 const jwt = require('jsonwebtoken');
 const Question = require('../../models/Questions');
 

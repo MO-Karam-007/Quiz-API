@@ -1,9 +1,9 @@
 const Question = require('../../models/Questions');
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const Quiz = require('../../models/Quiz');
 exports.getQuizQues = async (req, res) => {
     try {
-        const quizId = req.quiz._id;
-        const ques = await Question.find({ quizId });
+        const quizId = await Quiz.find({ _id: req.tokenValue._id });
+        const ques = await Question.find({ quizId: quizId._id });
 
         if (ques.length === 0) {
             return res.send({
@@ -44,12 +44,14 @@ exports.createQues = async (req, res) => {
             maxLength,
             options,
         } = req.body;
-        if (!type || !lecture_no) {
+        if (!type) {
             throw new Error(
-                'Select question type (multiple choice, true false, open ended ) and select lecture number'
+                'Select question type (multiple choice, true false, open ended )'
             );
         }
-
+        if (!lecture_no) {
+            throw new Error('You must specify a specific lecture number');
+        }
         if (type == 'multiple_choice') {
             if (!options || options.length < 2) {
                 throw new Error(
@@ -68,13 +70,15 @@ exports.createQues = async (req, res) => {
             }
         }
 
+        const quizId = await Quiz.find({ _id: req.tokenValue._id });
+
         const newquestion = await Question.create({
             type,
             question,
             correctAnswer,
             maxLength,
             options,
-            quizId: req.quiz._id,
+            quizId: quizId._id,
             lecture_no,
         });
 

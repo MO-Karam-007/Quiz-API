@@ -1,11 +1,11 @@
 const express = require('express');
 const quizRouter = express.Router();
 const quesController = require('./questions.Controller');
-const { verfyQuizToken } = require('../../middlewares/jwt');
+const { verfyToken } = require('../../middlewares/jwt');
 quizRouter
     .route('/questions')
-    .get(verfyQuizToken, quesController.getQuizQues)
-    .post(verfyQuizToken, quesController.createQues);
+    .get(verfyToken, quesController.getQuizQues)
+    .post(verfyToken, quesController.createQues);
 
 //NEW
 quizRouter.route('/questionsbank').get(quesController.questionsBank);

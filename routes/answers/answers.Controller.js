@@ -2,6 +2,7 @@ const Submit = require('../../models/Submit');
 const axios = require('axios');
 const Quiz = require('../../models/Quiz');
 const Score = require('../../models/Score');
+const User = require('../../models/User');
 exports.getAnswers = async (req, res) => {
     try {
         const options = {
@@ -12,7 +13,8 @@ exports.getAnswers = async (req, res) => {
         const submitedAnswers = [];
 
         let score = 0;
-        const userId = req.user._id;
+        var userId = req.tokenValue._id;
+        userId = await User.find({ _id: userId });
         const answers = req.body.answers;
         const quiz = await Quiz.findById(quizId);
         if (!quiz) {
@@ -23,8 +25,6 @@ exports.getAnswers = async (req, res) => {
             `https://good-lime-horse-robe.cyclic.app/v1/test/${quizId}`
         );
         const { questions } = fullQuiz.data;
-
-        
 
         for (let i = 0; i < questions.length; i++) {
             const questionId = questions[i]._id;
@@ -40,12 +40,12 @@ exports.getAnswers = async (req, res) => {
 
                 // Create a new Answer document for each question and answer'
                 const filters = {
-                    userId,
+                    userId: userId._id,
                     quizId,
                     questionId,
                 };
                 const update = {
-                    userId,
+                    userId: userId._id,
                     quizId,
                     questionId,
                     answer,
@@ -59,7 +59,6 @@ exports.getAnswers = async (req, res) => {
                 submitedAnswers.push(newanswer);
             } else if (questions[i].type == 'open_ended') {
                 // answer
-                
             }
         }
 
