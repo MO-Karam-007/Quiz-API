@@ -1,7 +1,7 @@
 const User = require('../../models/User');
 
 const { generateToken } = require('../../middlewares/jwt');
-const { verify } = require('../../middlewares/verificationCode');
+
 const nodemailer = require('nodemailer');
 exports.register = async (req, res) => {
     try {
@@ -12,14 +12,12 @@ exports.register = async (req, res) => {
         var stCode = Math.floor(Math.random() * 10000);
         // const code = Math.floor(Math.random() * 100000);
         if (
-            !(
-                email ||
-                password ||
-                role ||
-                passwordConfirm ||
-                first_name ||
-                last_name
-            )
+            !email &&
+            !password &&
+            !role &&
+            !passwordConfirm &&
+            !first_name &&
+            !last_name
         ) {
             throw new Error('all data requird ');
         }
