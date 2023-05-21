@@ -20,9 +20,9 @@ exports.register = async (req, res) => {
                 first_name ||
                 last_name
             )
-        )
+        ) {
             throw new Error('all data requird ');
-
+        }
         let user = await User.findOne({ email });
         if (user) throw new Error('Email already exists');
 
