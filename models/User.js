@@ -53,12 +53,6 @@ const userSchema = new mongoose.Schema({
     },
     stCode: {
         type: Number,
-        unique: function () {
-            return this.role === 'student';
-        },
-        allowNull: function () {
-            return this.role === 'instructor';
-        },
     },
     photo: String,
 });
