@@ -29,15 +29,13 @@ exports.register = async (req, res) => {
 
         if (password.length < 8) throw new Error('8 characters for password');
 
-        console.log(`password`, password);
-        console.log(`passwordConfirm`, passwordConfirm);
+        // const comparePasswords = await bcrypt.compare(
+        //     passwordConfirm,
+        //     password
+        // );
 
-        const comparePasswords = await bcrypt.compare(
-            passwordConfirm,
-            password
-        );
-
-        if (!comparePasswords) throw new Error(`password not the same`);
+        if (password != passwordConfirm)
+            throw new Error(`password not the same`);
 
         user = await User.create({
             role,
