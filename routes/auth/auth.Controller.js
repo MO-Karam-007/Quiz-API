@@ -34,8 +34,7 @@ exports.register = async (req, res) => {
             password
         );
 
-        if (!comparePasswords)
-            throw new Error(`password not the same:${error.message}`);
+        if (!comparePasswords) throw new Error(`password not the same`);
 
         user = await User.create({
             role,
