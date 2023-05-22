@@ -40,7 +40,7 @@ exports.register = async (req, res) => {
             last_name,
             ...(role === 'student' && { stCode }),
         });
-
+        console.log(`lol`);
         const token = generateToken(user._id);
         user['token'] = token;
 
