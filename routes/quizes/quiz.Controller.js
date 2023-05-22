@@ -5,7 +5,7 @@ const Question = require('../../models/Questions');
 const { generateToken } = require('../../middlewares/jwt');
 exports.getLastExam = async (req, res) => {
     try {
-        const time = new Date(Date.now() - 10 * 60 * 60);
+        const time = new Date(Date.now() - 3600000);
         const quiz = await Quiz.find({ createdAt: { $gte: time } });
         res.send(quiz);
     } catch (error) {}

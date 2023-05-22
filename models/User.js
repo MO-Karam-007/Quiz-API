@@ -53,21 +53,14 @@ const userSchema = new mongoose.Schema({
     },
     stCode: {
         type: Number,
-        unique: true,
     },
     photo: String,
 });
-// userSchema.pre('init', async function () {
-//     var stCode = Math.floor(Math.random() * 10000);
-//     const stCodeExist = await User.exists({ stCode });
-//     if (stCodeExist) {
-//         this.stCode =
-//             stCode * Math.floor(Math.random() * 10) +
-//             Math.floor(Math.random() * 5);
-//     } else {
-//         this.stCode = stCode;
-//     }
-// });
+userSchema.pre('save', async function () {
+    if (this.role != 'instructor') {
+        Object.assign(userSchema.stCode, { unique: true });
+    }
+});
 userSchema.pre('save', async function (next) {
     // if PASSWORD modified this method will work
     // if (!this.isModified('password')) return next();
