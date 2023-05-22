@@ -12,13 +12,9 @@ exports.getLastExam = async (req, res) => {
 };
 exports.getUserQuiz = async (req, res) => {
     try {
-        const createdBy = req.user._id;
+        const createdBy = req.tokenValue._id;
         const quiz = await Quiz.find({ createdBy });
-        // const token = jwt.sign({ _id: quiz._id }, process.env.JWT_KEY, {
-        //     expiresIn: '30d',
-        // });
 
-        // quiz.token = token;
         if (quiz.length === 0) {
             return res.send({
                 msg: 'No quizzes found for the specified creator',
