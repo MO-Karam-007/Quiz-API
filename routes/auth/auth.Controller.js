@@ -29,6 +29,9 @@ exports.register = async (req, res) => {
 
         if (password.length < 8) throw new Error('8 characters for password');
 
+        console.log(`password`, password);
+        console.log(`passwordConfirm`, passwordConfirm);
+
         const comparePasswords = await bcrypt.compare(
             passwordConfirm,
             password
