@@ -24,17 +24,18 @@ exports.register = async (req, res) => {
             throw new Error('all data requird');
         }
         let user = await User.findOne({ email });
+
         if (user) throw new Error('Email already exists');
 
-        if (password.length < 8)
-            throw new Error('8 characters for password at least 88');
+        if (password.length < 8) throw new Error('8 characters for password');
 
         const comparePasswords = await bcrypt.compare(
-            password,
-            passwordConfirm
+            passwordConfirm,
+            password
         );
 
-        if (!comparePasswords) throw new Error('password not the same');
+        if (!comparePasswords)
+            throw new Error(`password not the same:${error.message}`);
 
         user = await User.create({
             role,
