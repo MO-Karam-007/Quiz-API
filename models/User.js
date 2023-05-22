@@ -53,7 +53,6 @@ const userSchema = new mongoose.Schema({
     },
     stCode: {
         type: Number,
-        required: true,
         unique: true,
     },
     photo: String,
