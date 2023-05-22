@@ -53,14 +53,16 @@ const userSchema = new mongoose.Schema({
     },
     stCode: {
         type: Number,
+        unique: true,
+        allowNull: true,
     },
     photo: String,
 });
-userSchema.pre('save', async function () {
-    if (this.role != 'instructor') {
-        Object.assign(userSchema.stCode, { unique: true });
-    }
-});
+// userSchema.pre('save', async function () {
+//     if (this.role != 'instructor') {
+//         Object.assign(userSchema.stCode, { unique: true });
+//     }
+// });
 userSchema.pre('save', async function (next) {
     // if PASSWORD modified this method will work
     // if (!this.isModified('password')) return next();
