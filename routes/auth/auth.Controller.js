@@ -54,7 +54,6 @@ exports.register = async (req, res) => {
             msg: 'Signed up',
             user: user,
             token: user['token'],
-            comparePasswords,
         });
     } catch (error) {
         res.json({
