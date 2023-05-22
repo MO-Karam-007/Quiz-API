@@ -94,9 +94,9 @@ exports.createQues = async (req, res) => {
 
 exports.deleteQuestion = async (req, res) => {
     try {
-        const _id = req.params._id;
+        const _id = req.params.id;
         console.log(`Delete method`);
-        const deleted = await Question.deleteOne({ _id });
+        const deleted = await Question.findByIdAndDelete(_id);
         res.json({
             deleted,
         });

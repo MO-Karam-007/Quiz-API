@@ -9,5 +9,5 @@ quizRouter
 
 //NEW
 quizRouter.route('/questionsbank').get(quesController.questionsBank);
-quizRouter.route('/question/:_id').delete(quesController.deleteQuestion);
+quizRouter.route('/question/:id').delete(quesController.deleteQuestion);
 module.exports = quizRouter;
