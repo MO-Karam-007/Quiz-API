@@ -29,11 +29,6 @@ exports.register = async (req, res) => {
 
         if (password.length < 8) throw new Error('8 characters for password');
 
-        // const comparePasswords = await bcrypt.compare(
-        //     passwordConfirm,
-        //     password
-        // );
-
         if (password != passwordConfirm)
             throw new Error(`password not the same`);
 
@@ -45,7 +40,6 @@ exports.register = async (req, res) => {
             last_name,
             ...(role === 'student' && { stCode }),
         });
-        // verify(first_name, email);
 
         const token = generateToken(user._id);
         user['token'] = token;

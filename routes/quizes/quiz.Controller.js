@@ -1,5 +1,5 @@
 const Quiz = require('../../models/Quiz');
-
+const User = require('../../models/User');
 const jwt = require('jsonwebtoken');
 const Question = require('../../models/Questions');
 
@@ -53,8 +53,11 @@ exports.getQuizViaCategory = async (req, res) => {
 };
 
 exports.createQuiz = async (req, res) => {
-    if (req.user.role != 'instructor') throw new Error('You are not a teacher');
     try {
+        const _id = req.tokenValue._id;
+        const user = await User.findById(_id);
+        if (user.role != 'instructor')
+            throw new Error('Restricted to teachers only');
         const { description, title, photo, category, time } = req.body;
 
         if (!category || !title) {
