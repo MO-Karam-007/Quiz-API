@@ -2,7 +2,7 @@ const Quiz = require('../../models/Quiz');
 const User = require('../../models/User');
 const jwt = require('jsonwebtoken');
 const Question = require('../../models/Questions');
-
+const { generateToken } = require('../../middlewares/jwt');
 exports.getLastExam = async (req, res) => {
     try {
         const time = new Date(Date.now() - 10 * 60 * 60);
@@ -54,10 +54,11 @@ exports.getQuizViaCategory = async (req, res) => {
 
 exports.createQuiz = async (req, res) => {
     try {
-        const _id = req.tokenValue._id;
-        const user = await User.findById(_id);
+        const id = req.tokenValue._id;
+        const user = await User.findById(id);
         if (user.role != 'instructor')
             throw new Error('Restricted to teachers only');
+
         const { description, title, photo, category, time } = req.body;
 
         if (!category || !title) {
@@ -65,7 +66,7 @@ exports.createQuiz = async (req, res) => {
                 'You have Enter title and select category between [final,mid_term,quiz]'
             );
         }
-        const createdBy = req.user._id;
+        const createdBy = id;
         const quiz = await Quiz.create({
             title,
             description,
@@ -74,9 +75,7 @@ exports.createQuiz = async (req, res) => {
             category,
         });
 
-        const token = jwt.sign({ _id: quiz._id }, process.env.JWT_KEY, {
-            expiresIn: '30d',
-        });
+        const token = generateToken(quiz._id);
         quiz.token = token;
         res.json({
             quizes: quiz,
