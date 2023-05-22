@@ -69,8 +69,8 @@ exports.createQues = async (req, res) => {
                 throw new Error('Provide at least two or three words');
             }
         }
-
-        const quizId = await Quiz.find({ _id: req.tokenValue._id });
+        const _id = req.tokenValue._id;
+        const quizId = await Quiz.findById(_id);
 
         const newquestion = await Question.create({
             type,
