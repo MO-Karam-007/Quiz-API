@@ -10,18 +10,6 @@ exports.generateToken = (_id) => {
     );
 };
 
-exports.generateRefreshToken = (_id, role, email, name) => {
-    return jwt.sign(
-        {
-            _id,
-            role,
-            email,
-            name,
-        },
-        process.env.JWT_KEY_REFRESH,
-        { expiresIn: '30d' }
-    );
-};
 
 exports.verfyToken = (req, res, next) => {
     let token = req.headers.authorization;

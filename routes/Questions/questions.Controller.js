@@ -18,6 +18,7 @@ exports.getQuizQues = async (req, res) => {
         });
     }
 };
+
 exports.questionsBank = async (req, res) => {
     try {
         let lecture_no = req.body.lecture_no;

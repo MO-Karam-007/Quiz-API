@@ -8,7 +8,25 @@ exports.getLastExam = async (req, res) => {
         const time = new Date(Date.now() - 3600000);
         const quiz = await Quiz.find({ createdAt: { $gte: time } });
         res.send(quiz);
-    } catch (error) {}
+    } catch (error) {
+        res.json({
+            status: 'fail',
+            Error: error.message,
+        });
+    }
+};
+exports.getById = async (req, res) => {
+    try {
+        const getQuiz = await Quiz.findById(req.params.id);
+        res.json({
+            getQuiz,
+        });
+    } catch (error) {
+        res.json({
+            status: 'fail',
+            Error: error.message,
+        });
+    }
 };
 exports.getUserQuiz = async (req, res) => {
     try {
