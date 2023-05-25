@@ -87,7 +87,7 @@ exports.createQuiz = async (req, res) => {
             photo,
             createdBy,
             category,
-        }).populate(createdBy);
+        });
 
         const token = generateToken(quiz._id);
         quiz.token = token;
