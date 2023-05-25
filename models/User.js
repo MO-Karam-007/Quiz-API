@@ -51,6 +51,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         enum: ['instructor', 'student'],
     },
+    bio: {
+        type: String,
+        required: true,
+    },
     stCode: {
         type: Number,
     },

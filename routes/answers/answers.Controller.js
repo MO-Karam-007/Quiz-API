@@ -14,7 +14,7 @@ exports.getAnswers = async (req, res) => {
 
         let score = 0;
         var userId = req.tokenValue._id;
-        userId = await User.find({ _id: userId });
+        userId = await User.findById(userId);
         const answers = req.body.answers;
         const quiz = await Quiz.findById(quizId);
         if (!quiz) {
