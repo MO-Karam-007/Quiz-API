@@ -8,6 +8,7 @@ quizRouter
     .get(verfyToken, quizController.getUserQuiz)
     .post(verfyToken, quizController.createQuiz);
 quizRouter.route('/quiz/:id').get(quizController.getById);
+
 quizRouter.route('/quizbycategory').get(quizController.getQuizViaCategory);
 
 // Quiz

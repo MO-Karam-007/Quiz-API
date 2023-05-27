@@ -6,21 +6,13 @@ const { generateToken } = require('../../middlewares/jwt');
 const nodemailer = require('nodemailer');
 exports.register = async (req, res) => {
     try {
-        const { first_name, last_name, passwordConfirm, email, role } =
-            req.body;
+        const { first_name, last_name, email, role } = req.body;
         let password = req.body.password;
 
         var stCode = Math.floor(Math.random() * 10000);
         // const code = Math.floor(Math.random() * 100000);
 
-        if (
-            !email ||
-            !password ||
-            !role ||
-            !passwordConfirm ||
-            !first_name ||
-            !last_name
-        ) {
+        if (!email || !password || !role || !first_name || !last_name) {
             throw new Error('all data requird');
         }
         let user = await User.findOne({ email });
@@ -28,9 +20,6 @@ exports.register = async (req, res) => {
         if (user) throw new Error('Email already exists');
 
         if (password.length < 8) throw new Error('8 characters for password');
-
-        if (password != passwordConfirm)
-            throw new Error(`password not the same`);
 
         user = await User.create({
             role,

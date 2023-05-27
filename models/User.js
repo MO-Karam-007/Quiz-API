@@ -37,15 +37,15 @@ const userSchema = new mongoose.Schema({
         minlength: [8, 'Password must be at least 8 characters long'],
         select: false,
     },
-    passwordConfirm: {
-        type: String,
-        vallidate: {
-            validator: function (el) {
-                return el === this.password;
-            },
-        },
-        message: 'Passwords are not the same!',
-    },
+    // passwordConfirm: {
+    //     type: String,
+    //     vallidate: {
+    //         validator: function (el) {
+    //             return el === this.password;
+    //         },
+    //     },
+    //     message: 'Passwords are not the same!',
+    // },
     role: {
         type: String,
         required: true,
@@ -53,7 +53,6 @@ const userSchema = new mongoose.Schema({
     },
     bio: {
         type: String,
-        required: true,
     },
     stCode: {
         type: Number,
@@ -70,7 +69,7 @@ userSchema.pre('save', async function (next) {
     // if (!this.isModified('password')) return next();
     this.password = await bcrypt.hash(this.password, 10);
 
-    this.passwordConfirm = undefined;
+    // this.passwordConfirm = undefined;
     next();
 });
 userSchema.virtual('fullName').get(function () {
