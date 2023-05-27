@@ -6,7 +6,7 @@ const { generateToken } = require('../../middlewares/jwt');
 const nodemailer = require('nodemailer');
 exports.register = async (req, res) => {
     try {
-        const { first_name, last_name, email, role } = req.body;
+        const { first_name, last_name, email, role, bio } = req.body;
         let password = req.body.password;
 
         var stCode = Math.floor(Math.random() * 10000);
@@ -27,6 +27,7 @@ exports.register = async (req, res) => {
             password,
             first_name,
             last_name,
+            bio,
             ...(role === 'student' && { stCode }),
         });
         console.log(`lol`);
