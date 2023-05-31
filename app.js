@@ -14,6 +14,7 @@ const scoreRouter = require('./routes/score/score.routes');
 const dashboardRouter = require('./routes/dashboard/dashboard.routes');
 const qrRouter = require('./routes/qr/qr.Route');
 const cors = require('cors');
+
 var app = express();
 
 // view engine setup
@@ -33,7 +34,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-console.log(`ROUTES`);
+
 app.use('/v1', authRouter);
 app.use('/v1', quizRouter);
 app.use('/v1', questionRouter);

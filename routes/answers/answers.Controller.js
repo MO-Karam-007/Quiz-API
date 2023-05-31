@@ -15,7 +15,7 @@ exports.getAnswers = async (req, res) => {
         let score = 0;
         var userId = req.tokenValue._id;
         userId = await User.findById(userId);
-        const answers = req.body.answers;
+        const { answers } = req.body;
         const quiz = await Quiz.findById(quizId);
         if (!quiz) {
             throw new Error('Quiz not found');
@@ -25,19 +25,54 @@ exports.getAnswers = async (req, res) => {
             `https://good-lime-horse-robe.cyclic.app/v1/test/${quizId}`
         );
         const { questions } = fullQuiz.data;
+        console.log(`fullQuiz`, questions, questions.length);
 
         for (let i = 0; i < questions.length; i++) {
             const questionId = questions[i]._id;
             const answer = answers[i];
 
-            if (
-                questions[i].type == 'true_false' ||
-                questions[i].type == 'multiple_choice'
-            ) {
-                if (questions[i].correct_answer === JSON.parse(answer)) {
-                    score++;
-                }
+            // ["true","Layla","Layla","Layla",true,true,true]
 
+            if (questions[i].type == 'multiple_choice') {
+                console.log(questions[i].correct_answer, '=====', answers[i]);
+                console.log(questions[i].correct_answer == answers[i]);
+
+                console.log(`-----------------------`);
+                questions[i].correct_answer === answer ? score++ : score;
+                console.log(`score`, score);
+
+                // Create a new Answer document for each question and answer'
+                const filters = {
+                    userId: userId._id,
+                    quizId,
+                    questionId,
+                };
+                const update = {
+                    userId: userId._id,
+                    quizId,
+                    questionId,
+                    answer,
+                };
+
+                const newanswer = await Submit.findOneAndUpdate(
+                    filters,
+                    update,
+                    options
+                );
+                console.log(`Working`);
+
+                submitedAnswers.push(newanswer);
+            } else if (questions[i].type == 'true_false') {
+                console.log(
+                    questions[i].correct_answer,
+                    '=====',
+                    JSON.parse(answer)
+                );
+
+                console.log(`-----------------------`);
+                questions[i].correct_answer === JSON.parse(answer)
+                    ? score++
+                    : score;
                 // Create a new Answer document for each question and answer'
                 const filters = {
                     userId: userId._id,
@@ -58,7 +93,8 @@ exports.getAnswers = async (req, res) => {
                 );
                 submitedAnswers.push(newanswer);
             } else if (questions[i].type == 'open_ended') {
-                // answer
+                // questions[i].correct_answer === answer
+                
             }
         }
 

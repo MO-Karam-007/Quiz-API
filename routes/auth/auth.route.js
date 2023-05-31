@@ -7,6 +7,7 @@ const { verfyToken } = require('../../middlewares/jwt');
 
 authRouter.route('/signup').post(authController.register);
 authRouter.route('/login').post(authController.login);
-authRouter.route('/mailer').post(verfyToken, authController.emailVerify);
+authRouter.route('/send_email').post(verfyToken, authController.sendEmail);
+authRouter.route('/verify').post(verfyToken, authController.verifyEmail);
 
 module.exports = authRouter;

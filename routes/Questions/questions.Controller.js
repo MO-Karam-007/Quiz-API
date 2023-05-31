@@ -44,6 +44,7 @@ exports.createQues = async (req, res) => {
             correctAnswer,
             maxLength,
             options,
+            openEndedSubmittedAnswer
         } = req.body;
         if (!type) {
             throw new Error(
@@ -66,6 +67,7 @@ exports.createQues = async (req, res) => {
                 );
             }
         } else if (type == 'open_ended') {
+
             if (maxLength.length < 10) {
                 throw new Error('Provide at least two or three words');
             }
@@ -96,7 +98,6 @@ exports.createQues = async (req, res) => {
 exports.deleteQuestion = async (req, res) => {
     try {
         const _id = req.params.id;
-        console.log(`Delete method`);
         const deleted = await Question.findByIdAndDelete(_id);
         res.json({
             deleted,

@@ -30,7 +30,7 @@ exports.register = async (req, res) => {
             bio,
             ...(role === 'student' && { stCode }),
         });
-        console.log(`lol`);
+
         const token = generateToken(user._id);
         user['token'] = token;
 
@@ -47,26 +47,95 @@ exports.register = async (req, res) => {
     }
 };
 
-exports.emailVerify = async (req, res) => {
+exports.sendEmail = async (req, res) => {
     try {
         const code = Math.floor(Math.random() * 100000);
         const user = await User.findOne({ _id: req.tokenValue._id });
         const output = `
-            <h1>MK</h1>
-            <p>Hi, ${user.first_name}</p>
-            <p>Please use the following code to verify your login: ${code}</p>
-            <ul>  
-            <li>Thanks for your time,</li>
-            <li>The MK Security...</li>
-            </ul>
-            
+        <html>
+<head>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #2a8fe3;
+        }
+
+        h1 {
+            color: #333333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #555555;
+            font-size: 20px;
+            margin-top: 0;
+        }
+
+        p {
+            color: #777777;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        li {
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        .code{
+        font-weight: bold;
+        font-size: 20px;
+        }
+
+        p.signature {
+            color: #999999;
+            font-size: 14px;
+            margin-top: 30px;
+        }
+
+        .image-container {
+            width: 150px;
+            height: 120px;
+            background: url('https://i.ibb.co/qkKTBZY/Modern-Mode-logos-black.png') no-repeat center center;
+            background-size: cover;
+        }
+
+        .image-container img {
+            width: 150px;
+            height: 120px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="image-container">
+    </div>
+ 
+    <h1>Hi, ${user.first_name}</h1>
+    <h2>Verify your email address</h2>
+    <p>Thanks for starting the new OhmQuiz account creation process.
+    We want to make sure it's<br> really you. Please enter the following verification code when prompted.
+    If you don’t<br> want to create an account, you can ignore this message.</p>
+    <ul>
+        <li>Verification code</li>
+        <li class="code">${code}</li>
+        <li>(This code is valid for 10 minutes)</li>
+    </ul>
+    <p class="signature">ModernMode Team</p>
+
+</body>
+</html>
     `;
-        // function sendEmailBack() {
-        //     return req.user.email;
-        // }
-
-        // create reusable transporter object using the default SMTP transport
-
         let transporter = nodemailer.createTransport({
             host: process.env.HOST,
             port: 587,
@@ -76,17 +145,7 @@ exports.emailVerify = async (req, res) => {
                 user: process.env.EMAIL, // generated ethereal user
                 pass: process.env.GMIAL_PASSWORD, // generated ethereal password
             },
-            // tls: {
-            //     rejectUnauthorized: false,
-            // },
         });
-        // console.log(req.user.email);
-        // const e_mail = req.user.email;
-        // console.log(e_mail);
-
-        // setup email data with unicode symbols
-
-        // send mail with defined transport object
 
         let mailOptions = {
             from: process.env.EMAIL, // sender address
@@ -95,27 +154,41 @@ exports.emailVerify = async (req, res) => {
             text: 'Hello,', // plain text body
             html: output, // html body
         };
-        transporter.sendMail(mailOptions, (error, info) => {
+        transporter.sendMail(mailOptions, async (error, info) => {
             if (error) {
-                console.error('Error sending email:', error);
                 res.status(500).send({ msg: 'Error sending email' });
             } else {
-                console.log('Message sent: %s', info.messageId);
-                console.log(
-                    'Preview URL: %s',
-                    nodemailer.getTestMessageUrl(info)
+                await User.findOneAndUpdate(
+                    { _id: req.tokenValue._id },
+                    { $set: { verifyCode: code } },
+                    { new: true }
                 );
-                res.send('Email sended');
+                res.send(
+                    `Email sended \n from  : ${process.env.EMAIL} \n To User ${user.email}`
+                );
             }
         });
-
-        // res.send('Email sended');
     } catch (error) {
         res.json({
             status: 'fail',
             Error: error.message,
         });
     }
+};
+exports.verifyEmail = async (req, res) => {
+    let counter = 0;
+    const code = req.body.code * 1;
+    const user = await User.findById(req.tokenValue._id).select('+verifyCode');
+    const userCode = user.verifyCode;
+
+    if (code != userCode) {
+        counter++;
+
+        user.counter = counter;
+        await user.save();
+    }
+    // if (counter == 3) await user.findOneAndDelete({ email: user.email });
+    res.send('Ok');
 };
 
 exports.login = async (req, res) => {

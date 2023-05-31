@@ -57,7 +57,17 @@ const userSchema = new mongoose.Schema({
     stCode: {
         type: Number,
     },
+    verified: {
+        type: Boolean,
+        default: true,
+        select: false,
+    },
+    verifyCode: {
+        type: Number,
+        select: false,
+    },
     photo: String,
+    counter: { type: Number },
 });
 // userSchema.pre('save', async function () {
 //     if (this.role != 'instructor') {

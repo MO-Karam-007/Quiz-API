@@ -32,9 +32,7 @@ exports.getById = async (req, res) => {
         const quizId = req.params.id;
 
         const getQuiz = await Quiz.findById(quizId);
-        const fullQuiz = getQuiz.map(ele=>{
-
-        })
+        const fullQuiz = getQuiz.map((ele) => {});
 
         res.json({
             status: 'success',
