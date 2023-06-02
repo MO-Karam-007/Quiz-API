@@ -23,7 +23,7 @@ exports.questionsBank = async (req, res) => {
     try {
         let lecture_no = req.query.no * 1;
 
-        const questions = await Question.find({ lecture_no: no });
+        const questions = await Question.find({ lecture_no });
 
         res.json({
             questions,
