@@ -3,6 +3,7 @@ const User = require('../../models/User');
 const jwt = require('jsonwebtoken');
 const Question = require('../../models/Questions');
 const { generateToken } = require('../../middlewares/jwt');
+// const Archive = require('../../models/Archives');
 exports.getLastExam = async (req, res) => {
     try {
         const time = new Date(Date.now() - 3600000);
@@ -90,20 +91,27 @@ exports.createQuiz = async (req, res) => {
         if (user.role != 'instructor')
             throw new Error('Restricted to teachers only');
 
-        const { description, title, photo, category, time } = req.body;
+        const { description, title, photo, category, time, status } = req.body;
 
         if (!category || !title) {
             throw new Error(
                 'You have Enter title and select category between [final,mid_term,quiz]'
             );
         }
+        if (!status) {
+            throw new Error('select post status ');
+        }
         const createdBy = id;
-        const quiz = await Quiz.create({
+
+        let quiz = {};
+
+        quiz = await Quiz.create({
             title,
             description,
             photo,
             createdBy,
             category,
+            status,
         });
 
         const token = generateToken(quiz._id);

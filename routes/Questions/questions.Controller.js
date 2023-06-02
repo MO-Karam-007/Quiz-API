@@ -21,9 +21,9 @@ exports.getQuizQues = async (req, res) => {
 
 exports.questionsBank = async (req, res) => {
     try {
-        let lecture_no = req.body.lecture_no;
+        let lecture_no = req.query.no * 1;
 
-        const questions = await Question.find({ lecture_no });
+        const questions = await Question.find({ lecture_no: no });
 
         res.json({
             questions,
@@ -44,7 +44,7 @@ exports.createQues = async (req, res) => {
             correctAnswer,
             maxLength,
             options,
-            openEndedSubmittedAnswer
+            openEndedSubmittedAnswer,
         } = req.body;
         if (!type) {
             throw new Error(
@@ -67,7 +67,6 @@ exports.createQues = async (req, res) => {
                 );
             }
         } else if (type == 'open_ended') {
-
             if (maxLength.length < 10) {
                 throw new Error('Provide at least two or three words');
             }

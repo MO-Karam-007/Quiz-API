@@ -22,6 +22,10 @@ const quizSchema = new mongoose.Schema(
             type: String,
             default: 'no-photo.jpg',
         },
+        status: {
+            type: String,
+            enum: ['draft', 'publish'],
+        },
         time: {
             type: Date,
             requied: true,
