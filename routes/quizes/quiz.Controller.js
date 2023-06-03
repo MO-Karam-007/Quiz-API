@@ -18,33 +18,11 @@ exports.getLastExam = async (req, res) => {
 exports.getById = async (req, res) => {
     try {
         const quizId = req.params.id;
-        const questions = await Question.find({ quizId });
-        const formatQuestion = questions.map((ele) => {
-            return {
-                _id: ele._id,
-                question: ele.question,
-                options: ele.options,
-                correct_answer: ele.correctAnswer,
-                lecture_no: ele.lecture_no,
-                type: ele.type,
-            };
-        });
-
-        const getQuiz = await Quiz.findById(quizId);
-        console.log(`getQuiz`, getQuiz);
-        const fullQuiz = getQuiz.map((ele) => {
-            return {
-                title: ele.title,
-                category: ele.category,
-                description: ele.description,
-                time: ele.time,
-                formatQuestion,
-            };
-        });
+        const quiz = await Quiz.findById(quizId);
 
         res.json({
-            status: 'success',
-            quiz: fullQuiz,
+            status: 'true',
+            quiz,
         });
     } catch (error) {
         res.json({
