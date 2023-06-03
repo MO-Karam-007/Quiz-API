@@ -31,11 +31,19 @@ exports.getById = async (req, res) => {
         });
 
         const getQuiz = await Quiz.findById(quizId);
-        const fullQuiz = getQuiz.map((ele) => {});
+        const fullQuiz = getQuiz.map((ele) => {
+            return {
+                title: ele.title,
+                category: ele.category,
+                description: ele.description,
+                time: ele.time,
+                formatQuestion,
+            };
+        });
 
         res.json({
             status: 'success',
-            quiz: getQuiz,
+            quiz: fullQuiz,
         });
     } catch (error) {
         res.json({
