@@ -1,6 +1,11 @@
 const Quiz = require('../../models/Quiz');
-const Score = require('../../models/Score');
-const User = require('../../models/User');
+
+exports.getallArchive = async (req, res) => {
+    const allArchives = await Quiz.find({ status: 'draft' });
+    res.json({
+        msg: allArchives,
+    });
+};
 
 exports.editArchive = async (req, res) => {
     try {
@@ -26,12 +31,16 @@ exports.editArchive = async (req, res) => {
     }
 };
 
-exports.getArchive = async (req, res) => {
+exports.getOneArchive = async (req, res) => {
     try {
-        const archives = await Quiz.find({ status: 'draft' });
+        const token = req.tokenValue._id;
+        const getAllDrafts = await Quiz.find({ status: 'draft' });
+        const filter = getAllDrafts.filter((ele) => {
+            return ele._id === token;
+        });
 
         res.json({
-            archives,
+            filter,
         });
     } catch (error) {
         res.json({

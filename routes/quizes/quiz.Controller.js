@@ -1,6 +1,6 @@
 const Quiz = require('../../models/Quiz');
 const User = require('../../models/User');
-const jwt = require('jsonwebtoken');
+
 const Question = require('../../models/Questions');
 const { generateToken } = require('../../middlewares/jwt');
 exports.getLastExam = async (req, res) => {
@@ -20,9 +20,12 @@ exports.getById = async (req, res) => {
         const quizId = req.params.id;
         const quiz = await Quiz.findById(quizId);
 
+        const token = generateToken(quiz._id);
+
         res.json({
             status: 'true',
             quiz,
+            token,
         });
     } catch (error) {
         res.json({
