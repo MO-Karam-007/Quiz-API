@@ -3,7 +3,6 @@ const User = require('../../models/User');
 const jwt = require('jsonwebtoken');
 const Question = require('../../models/Questions');
 const { generateToken } = require('../../middlewares/jwt');
-// const Archive = require('../../models/Archives');
 exports.getLastExam = async (req, res) => {
     try {
         const time = new Date(Date.now() - 3600000);
@@ -18,6 +17,7 @@ exports.getLastExam = async (req, res) => {
 };
 exports.getById = async (req, res) => {
     try {
+        const quizId = req.params.id;
         const questions = await Question.find({ quizId });
         const formatQuestion = questions.map((ele) => {
             return {
@@ -29,8 +29,6 @@ exports.getById = async (req, res) => {
                 type: ele.type,
             };
         });
-
-        const quizId = req.params.id;
 
         const getQuiz = await Quiz.findById(quizId);
         const fullQuiz = getQuiz.map((ele) => {});
