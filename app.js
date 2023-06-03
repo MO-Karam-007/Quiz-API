@@ -12,7 +12,7 @@ var questionRouter = require('./routes/Questions/questions.route');
 var answerRouter = require('./routes/answers/answers.Route');
 var scoreRouter = require('./routes/score/score.routes');
 var dashboardRouter = require('./routes/dashboard/dashboard.routes');
-// var archiveRouter = require('./routes/archive/archive.routes');
+var archiveRouter = require('./routes/archive/archive.routes');
 var qrRouter = require('./routes/qr/qr.Route');
 const cors = require('cors');
 
@@ -37,7 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 
 app.use('/v1', authRouter);
-// app.use('/v1', archiveRouter);
+app.use('/v1', archiveRouter);
 app.use('/v1', quizRouter);
 app.use('/v1', questionRouter);
 app.use('/v1', answerRouter);
