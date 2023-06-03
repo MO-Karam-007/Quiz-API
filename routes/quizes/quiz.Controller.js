@@ -31,6 +31,7 @@ exports.getById = async (req, res) => {
         });
 
         const getQuiz = await Quiz.findById(quizId);
+        console.log(`getQuiz`, getQuiz);
         const fullQuiz = getQuiz.map((ele) => {
             return {
                 title: ele.title,
