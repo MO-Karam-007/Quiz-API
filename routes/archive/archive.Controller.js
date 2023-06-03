@@ -36,7 +36,7 @@ exports.getOneArchive = async (req, res) => {
         const token = req.tokenValue._id;
         const getAllDrafts = await Quiz.find({ status: 'draft' });
         console.log(`getAllDrafts`, getAllDrafts);
-        const filter = getAllDrafts.filter((ele) => {
+        const filter = getAllDrafts.find((ele) => {
             return ele._id == token;
         });
         console.log(`filter`, filter);
