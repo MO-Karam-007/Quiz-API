@@ -34,15 +34,13 @@ exports.editArchive = async (req, res) => {
 exports.getOneArchive = async (req, res) => {
     try {
         const token = req.tokenValue._id;
-        const getAllDrafts = await Quiz.find({ status: 'draft' });
-        console.log(`getAllDrafts`, getAllDrafts);
-        const filter = getAllDrafts.find((ele) => {
-            return ele._id == token;
-        });
-        console.log(`filter`, filter);
+        const findQuiz = await Quiz.findById(token);
+        if (findQuiz.status != 'draft') {
+            throw new Error('Not a draft this published before');
+        }
 
         res.json({
-            filter,
+            findQuiz,
         });
     } catch (error) {
         res.json({
