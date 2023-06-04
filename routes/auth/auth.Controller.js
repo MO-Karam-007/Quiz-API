@@ -28,6 +28,7 @@ exports.register = async (req, res) => {
             first_name,
             last_name,
             bio,
+            profileImageUrl: req.file.path,
             ...(role === 'student' && { stCode }),
         });
 

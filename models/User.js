@@ -66,7 +66,7 @@ const userSchema = new mongoose.Schema({
         type: Number,
         select: false,
     },
-    photo: String,
+    profileImageUrl: String,
     counter: { type: Number },
 });
 // userSchema.pre('save', async function () {
