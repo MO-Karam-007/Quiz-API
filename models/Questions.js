@@ -29,12 +29,12 @@ const questionSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.Mixed,
         required: true,
     },
-    maxLength: {
-        type: Number,
-        required: function () {
-            return this.type === 'open_ended';
-        },
-    },
+    // maxLength: {
+    //     type: Number,
+    //     // required: function () {
+    //     //     return this.type === 'open_ended';
+    //     // },
+    // },
 });
 
 const Question = mongoose.model('Question', questionSchema);
