@@ -48,6 +48,7 @@ exports.createQues = async (req, res) => {
             openEndedSubmittedAnswer,
         } = req.body;
         if (!type) {
+            console.log(`555`);
             throw new Error(
                 'Select question type (multiple choice, true false, open ended )'
             );
@@ -67,6 +68,7 @@ exports.createQues = async (req, res) => {
             }
         } 
         // else if (type == 'open_ended') {
+        //     console.log(`555`);
         //     if (maxLength.length < 10) {
         //         throw new Error('Provide at least two or three words');
         //     }
