@@ -1,5 +1,6 @@
 const Question = require('../../models/Questions');
 const Quiz = require('../../models/Quiz');
+const User = require('../../models/User');
 exports.getQuizQues = async (req, res) => {
     try {
         const quizId = await Quiz.find({ _id: req.tokenValue._id });
