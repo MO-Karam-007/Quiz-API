@@ -61,10 +61,8 @@ exports.createQues = async (req, res) => {
                 );
             }
         } else if (type == 'true_false') {
-            if (typeof correctAnswer != 'boolean') {
-                throw new Error(
-                    'Provide a valid boolean answer for true/false questions'
-                );
+            if (correctAnswer != ('true' || 'fasle')) {
+                throw new Error('Provide answer for true/false');
             }
         } else if (type == 'open_ended') {
             if (maxLength.length < 10) {
@@ -72,7 +70,7 @@ exports.createQues = async (req, res) => {
             }
         }
         const _id = req.tokenValue._id;
-        const quizId = await Quiz.findById(_id);
+        const userId = await User.findById(_id);
 
         const newquestion = await Question.create({
             type,
@@ -80,7 +78,7 @@ exports.createQues = async (req, res) => {
             correctAnswer,
             maxLength,
             options,
-            quizId: quizId._id,
+            userId: userId._id,
             lecture_no,
         });
 
