@@ -65,10 +65,11 @@ exports.createQues = async (req, res) => {
             if (correctAnswer != ('true' || 'fasle')) {
                 throw new Error('Provide answer for true/false');
             }
-        } else if (type == 'open_ended') {
-            if (maxLength.length < 10) {
-                throw new Error('Provide at least two or three words');
-            }
+        } 
+        // else if (type == 'open_ended') {
+        //     if (maxLength.length < 10) {
+        //         throw new Error('Provide at least two or three words');
+        //     }
         }
         const _id = req.tokenValue._id;
         const userId = await User.findById(_id);
