@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const quizSchema = new mongoose.Schema(
     {
         title: {
@@ -35,9 +36,8 @@ const quizSchema = new mongoose.Schema(
             type: [
                 {
                     type: mongoose.Schema.Types.ObjectId,
-                    ref: 'Questions',
+                    ref: 'Question',
                     requied: true,
-                    // Add any other fields you need for each question object
                 },
             ],
         },

@@ -1,7 +1,7 @@
 const Quiz = require('../../models/Quiz');
 const User = require('../../models/User');
 
-const Question = require('../../models/Questions');
+const Question = require('../../models/Question');
 const { generateToken } = require('../../middlewares/jwt');
 exports.getLastExam = async (req, res) => {
     try {
@@ -37,11 +37,11 @@ exports.getById = async (req, res) => {
 exports.getUserQuiz = async (req, res) => {
     try {
         const createdBy = req.tokenValue._id;
-        const quiz = await Quiz.find({ createdBy }).populate({
-            path: 'questions',
-            model: 'Questions',
-        });
-        // .populate('createdBy')
+        const quiz = await Quiz.find({ createdBy }).populate('Question');
+        // .populate({
+        //     path: 'questions',
+        //     model: 'Question',
+        // });
 
         if (quiz.length === 0) {
             return res.send({

@@ -1,4 +1,4 @@
-const Question = require('../../models/Questions');
+const Question = require('../../models/Question');
 const Quiz = require('../../models/Quiz');
 const User = require('../../models/User');
 exports.getQuizQues = async (req, res) => {
