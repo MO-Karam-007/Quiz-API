@@ -37,7 +37,7 @@ exports.getById = async (req, res) => {
 exports.getUserQuiz = async (req, res) => {
     try {
         const createdBy = req.tokenValue._id;
-        const quiz = await Quiz.find({ createdBy }).populate('Question');
+        const quiz = await Quiz.find({ createdBy }).populate('questions');
         // .populate({
         //     path: 'questions',
         //     model: 'Question',
