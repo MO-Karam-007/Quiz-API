@@ -79,7 +79,8 @@ exports.createQuiz = async (req, res) => {
         if (user.role != 'instructor')
             throw new Error('Restricted to teachers only');
 
-        const { description, title, photo, category, time, status } = req.body;
+        const { description, title, photo, category, time, status, questions } =
+            req.body;
 
         if (!category || !title) {
             throw new Error(
@@ -91,15 +92,14 @@ exports.createQuiz = async (req, res) => {
         }
         const createdBy = id;
 
-        let quiz = {};
-
-        quiz = await Quiz.create({
+        let quiz = await Quiz.create({
             title,
             description,
             photo,
             createdBy,
             category,
             status,
+            questions,
         });
 
         const token = generateToken(quiz._id);
