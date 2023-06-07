@@ -31,6 +31,14 @@ const quizSchema = new mongoose.Schema(
             requied: true,
             default: () => new Date(Date.now() + 20 * 60 * 60),
         },
+        questions: {
+            type: [
+                {
+                    type: String,
+                    // Add any other fields you need for each question object
+                },
+            ],
+        },
     },
     { timestamps: true }
 );
