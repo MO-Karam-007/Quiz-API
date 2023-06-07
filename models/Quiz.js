@@ -34,7 +34,9 @@ const quizSchema = new mongoose.Schema(
         questions: {
             type: [
                 {
-                    type: String,
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'Question',
+                    requied: true,
                     // Add any other fields you need for each question object
                 },
             ],
