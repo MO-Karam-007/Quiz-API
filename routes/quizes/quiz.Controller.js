@@ -18,7 +18,7 @@ exports.getLastExam = async (req, res) => {
 exports.getById = async (req, res) => {
     try {
         const quizId = req.params.id;
-        const quiz = await Quiz.findById(quizId);
+        const quiz = await Quiz.findById(quizId).populate('questions');
 
         const token = generateToken(quiz._id);
 
