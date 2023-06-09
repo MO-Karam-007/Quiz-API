@@ -66,20 +66,21 @@ exports.changeStatus = async (req, res) => {
         console.log(`Done1 `);
         const { status, questions } = req.body;
         const checkQuiz = await Quiz.findById(id);
+        const oldQuestions = checkQuiz.questions;
+        const full = oldQuestions.concat(questions);
 
-        console.log(`LL1`);
-        if (checkQuiz.title === 'Archive 777') {
+        console.log(checkQuiz.status === 'publish');
+        if (checkQuiz.status === 'publish') {
             throw new Error('This quiz published before');
         }
-        console.log(`LL1`);
 
         const quiz = await Quiz.findByIdAndUpdate(id, {
             status,
-            questions,
-        });
-        quiz.createdAt = new Date();
+            questions: full,
+            createdAt: new Date(),
+        }).populate('questions');
+
         res.json({
-            lll: checkQuiz,
             quiz,
         });
     } catch (error) {
