@@ -62,7 +62,7 @@ exports.changeStatus = async (req, res) => {
         }
         const { status, questions } = req.body;
         const checkQuiz = await Quiz.findById(id);
-        if (checkQuiz.status === 'publish') {
+        if (checkQuiz.status != 'draft') {
             throw new Error('This quiz published before');
         }
 
@@ -72,7 +72,7 @@ exports.changeStatus = async (req, res) => {
         });
         quiz.createdAt = new Date();
         res.json({
-            lll: checkQuiz, 
+            lll: checkQuiz,
             quiz,
         });
     } catch (error) {
