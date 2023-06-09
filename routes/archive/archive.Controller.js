@@ -77,7 +77,6 @@ exports.changeStatus = async (req, res) => {
         const quiz = await Quiz.findByIdAndUpdate(id, {
             status,
             questions: full,
-            createdAt: new Date(),
         }).populate('questions');
 
         res.json({

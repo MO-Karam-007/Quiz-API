@@ -7,6 +7,6 @@ arcRoute.route('/archive/one').get(verfyToken, arcController.getOneArchive);
 arcRoute.route('/archive/:id').post(arcController.editArchive);
 arcRoute
     .route('/archive/change_status/:id')
-    .patch(verfyToken, arcController.changeStatus);
+    .put(verfyToken, arcController.changeStatus);
 
 module.exports = arcRoute;
