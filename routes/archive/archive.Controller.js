@@ -1,5 +1,5 @@
 const Quiz = require('../../models/Quiz');
-
+const User = require('../../models/User');
 exports.getallArchive = async (req, res) => {
     const allArchives = await Quiz.find({ status: 'draft' });
     res.json({
@@ -47,4 +47,19 @@ exports.getOneArchive = async (req, res) => {
             msg: error,
         });
     }
+};
+
+exports.changeStatus = async () => {
+    const userId = req.tokenValue._id;
+    const id = req.params.id;
+    const user = await User.findById(userId);
+    if (user.role != 'instructor') {
+        throw new Error(
+            'You are not allow to change status, For instructors only'
+        );
+    }
+    const quiz = await Quiz.findByIdAndUpdate(id, { status: req.body.status });
+    res.json({
+        quiz,
+    });
 };
