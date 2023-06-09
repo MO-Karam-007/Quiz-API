@@ -49,7 +49,7 @@ exports.getOneArchive = async (req, res) => {
     }
 };
 
-exports.changeStatus = async () => {
+exports.changeStatus = async (req, res) => {
     try {
         const userId = req.tokenValue._id;
         const id = req.params.id;
