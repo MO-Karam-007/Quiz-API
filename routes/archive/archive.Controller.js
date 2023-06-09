@@ -26,7 +26,7 @@ exports.editArchive = async (req, res) => {
         });
     } catch (error) {
         res.json({
-            msg: error,
+            msg: error.message,
         });
     }
 };
@@ -35,16 +35,19 @@ exports.getOneArchive = async (req, res) => {
     try {
         const token = req.tokenValue._id;
         const findQuiz = await Quiz.findById(token);
-        if (findQuiz.status != 'draft') {
+        console.log(`Cone 1`);
+        console.log(findQuiz.status === 'publish');
+        if (findQuiz.status === 'publish') {
             throw new Error('Not a draft this published before');
         }
+        console.log(`Cone 2`);
 
         res.json({
             findQuiz,
         });
     } catch (error) {
         res.json({
-            msg: error,
+            msg: error.message,
         });
     }
 };
@@ -60,10 +63,12 @@ exports.changeStatus = async (req, res) => {
                 'You are not allow to change status, For instructors only'
             );
         }
+        console.log(`Done1 `);
         const { status, questions } = req.body;
         const checkQuiz = await Quiz.findById(id);
+
         console.log(`LL1`);
-        if (checkQuiz.status != 'draft') {
+        if (checkQuiz.title === 'Archive 777') {
             throw new Error('This quiz published before');
         }
         console.log(`LL1`);
@@ -79,7 +84,7 @@ exports.changeStatus = async (req, res) => {
         });
     } catch (error) {
         res.json({
-            msg: error,
+            msg: error.message,
         });
     }
 };
