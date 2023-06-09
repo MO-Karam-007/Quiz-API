@@ -6,25 +6,12 @@ const { generateToken } = require('../../middlewares/jwt');
 exports.getLastExam = async (req, res) => {
     try {
         const time = new Date(Date.now() - 3600000 * 24);
-        const lastMidTerm = await Quiz.findOne({
+        const lastExam = await Quiz.findOne({
             status: 'publish',
-            category: 'mid_term',
             createdAt: { $gte: time },
         }).sort({ createdAt: -1 });
 
-        const lastFinal = await Quiz.findOne({
-            status: 'publish',
-            category: 'final',
-            createdAt: { $gte: time },
-        }).sort({ createdAt: -1 });
-        const lastQuiz = await Quiz.findOne({
-            status: 'publish',
-            category: 'final',
-            createdAt: { $gte: time },
-        }).sort({ createdAt: -1 });
-
-        const arr = { lastMidTerm, lastFinal, lastQuiz };
-        res.json({ arr });
+        res.json({ lastExam });
     } catch (error) {
         res.json({
             status: 'fail',
