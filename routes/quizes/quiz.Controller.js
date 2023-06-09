@@ -5,8 +5,11 @@ const Question = require('../../models/Question');
 const { generateToken } = require('../../middlewares/jwt');
 exports.getLastExam = async (req, res) => {
     try {
-        const time = new Date(Date.now() - 3600000);
+        const time = new Date(Date.now() - 3600000 * 24);
         const quiz = await Quiz.find({ createdAt: { $gte: time } });
+        if (quiz.status != 'publish') {
+            throw new Error('Now published yet');
+        }
         res.send(quiz);
     } catch (error) {
         res.json({
@@ -61,9 +64,11 @@ exports.getUserQuiz = async (req, res) => {
 };
 exports.getQuizViaCategory = async (req, res) => {
     try {
-        console.log(req.query);
+     
         const category = req.query.category;
-        const quiz = await Quiz.find({ category }).populate('createdBy');
+        const quiz = await Quiz.find({ category, status: 'publish' }).populate(
+            'createdBy'
+        );
 
         res.json({
             quiz,

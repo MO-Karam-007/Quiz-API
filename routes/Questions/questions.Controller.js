@@ -112,5 +112,5 @@ exports.deleteQuestion = async (req, res) => {
 // exports.answers = async (req,res)=>{
 //     const answers = req.body.answer;
 //     const questionId =
-//     const question = await Question.find({})
+//     const question = await w.find({})
 // }
