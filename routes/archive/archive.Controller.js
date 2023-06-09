@@ -53,15 +53,24 @@ exports.changeStatus = async (req, res) => {
     try {
         const userId = req.tokenValue._id;
         const id = req.params.id;
+
         const user = await User.findById(userId);
         if (user.role != 'instructor') {
             throw new Error(
                 'You are not allow to change status, For instructors only'
             );
         }
+        const { status, questions } = req.body;
+        const checkQuiz = await Quiz.findById(id);
+        if (checkQuiz.status == 'publish') {
+            throw new Error('This quiz published before');
+        }
+
         const quiz = await Quiz.findByIdAndUpdate(id, {
-            status: req.body.status,
+            status,
+            questions,
         });
+        quiz.createdAt = new Date();
         res.json({
             quiz,
         });
