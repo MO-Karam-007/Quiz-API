@@ -50,16 +50,24 @@ exports.getOneArchive = async (req, res) => {
 };
 
 exports.changeStatus = async () => {
-    const userId = req.tokenValue._id;
-    const id = req.params.id;
-    const user = await User.findById(userId);
-    if (user.role != 'instructor') {
-        throw new Error(
-            'You are not allow to change status, For instructors only'
-        );
+    try {
+        const userId = req.tokenValue._id;
+        const id = req.params.id;
+        const user = await User.findById(userId);
+        if (user.role != 'instructor') {
+            throw new Error(
+                'You are not allow to change status, For instructors only'
+            );
+        }
+        const quiz = await Quiz.findByIdAndUpdate(id, {
+            status: req.body.status,
+        });
+        res.json({
+            quiz,
+        });
+    } catch (error) {
+        res.json({
+            msg: error,
+        });
     }
-    const quiz = await Quiz.findByIdAndUpdate(id, { status: req.body.status });
-    res.json({
-        quiz,
-    });
 };
