@@ -62,9 +62,11 @@ exports.changeStatus = async (req, res) => {
         }
         const { status, questions } = req.body;
         const checkQuiz = await Quiz.findById(id);
+        console.log(`LL1`);
         if (checkQuiz.status != 'draft') {
             throw new Error('This quiz published before');
         }
+        console.log(`LL1`);
 
         const quiz = await Quiz.findByIdAndUpdate(id, {
             status,
