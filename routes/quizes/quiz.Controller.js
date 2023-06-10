@@ -99,6 +99,36 @@ exports.createQuiz = async (req, res) => {
         if (!status) {
             throw new Error('select post status ');
         }
+
+        const midTermState = await Quiz.find({
+            status: 'draft',
+            category: 'mid_term',
+        });
+        const finalState = await Quiz.find({
+            status: 'draft',
+            category: 'final',
+        });
+        const quizState = await Quiz.find({
+            status: 'draft',
+            category: 'quiz',
+        });
+
+        if (category === 'mid_term') {
+            if (midTermState.length != 0) {
+                throw new Error('There is one midterm in archive');
+            }
+        }
+
+        if (category === 'final') {
+            if (finalState.length != 0) {
+                throw new Error('There is one final in archive');
+            }
+        }
+        if (category === 'quiz') {
+            if (quizState.length != 0) {
+                throw new Error('There is one quiz in archive');
+            }
+        }
         const createdBy = id;
 
         let quiz = await Quiz.create({
