@@ -33,8 +33,8 @@ exports.editArchive = async (req, res) => {
 
 exports.getOneArchive = async (req, res) => {
     try {
-        const token = req.tokenValue._id;
-        const findQuiz = await Quiz.findById(token);
+        const id = req.params.id;
+        const findQuiz = await Quiz.findById(id);
         console.log(`Cone 1`);
         console.log(findQuiz.status === 'publish');
         if (findQuiz.status === 'publish') {
