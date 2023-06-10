@@ -66,8 +66,8 @@ exports.changeStatus = async (req, res) => {
         console.log(`Done1 `);
         const { status, questions } = req.body;
         const checkQuiz = await Quiz.findById(id);
-        const oldQuestions = checkQuiz.questions;
-        const full = oldQuestions.concat(questions);
+        
+
 
         console.log(checkQuiz.status === 'publish');
         if (checkQuiz.status === 'publish') {
@@ -76,7 +76,7 @@ exports.changeStatus = async (req, res) => {
 
         const quiz = await Quiz.findByIdAndUpdate(id, {
             status,
-            questions: full,
+            questions,
         }).populate('questions');
 
         res.json({
