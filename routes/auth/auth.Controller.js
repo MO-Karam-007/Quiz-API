@@ -6,13 +6,20 @@ const { generateToken } = require('../../middlewares/jwt');
 const nodemailer = require('nodemailer');
 exports.register = async (req, res) => {
     try {
-        const { first_name, last_name, email, role, bio } = req.body;
+        const { first_name, last_name, email, role, bio, username } = req.body;
         let password = req.body.password;
 
         var stCode = Math.floor(Math.random() * 10000);
         // const code = Math.floor(Math.random() * 100000);
 
-        if (!email || !password || !role || !first_name || !last_name) {
+        if (
+            !email ||
+            !password ||
+            !role ||
+            !first_name ||
+            !last_name ||
+            !username
+        ) {
             throw new Error('all data requird');
         }
         let user = await User.findOne({ email });
@@ -28,6 +35,7 @@ exports.register = async (req, res) => {
             first_name,
             last_name,
             bio,
+            username,
             // profileImageUrl: req.files,
             ...(role === 'student' && { stCode }),
         });
@@ -211,6 +219,21 @@ exports.login = async (req, res) => {
             data: 'User logged in',
             user,
             token: user['token'],
+        });
+    } catch (error) {
+        res.json({
+            status: 'fail',
+            Error: error.message,
+        });
+    }
+};
+
+exports.getAllStd = async (req, res) => {
+    try {
+        const stds = await User.find({ role: 'student' });
+        res.json({
+            status: 'success',
+            students: stds,
         });
     } catch (error) {
         res.json({
