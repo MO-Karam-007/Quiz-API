@@ -23,6 +23,9 @@ exports.getById = async (req, res) => {
     try {
         const quizId = req.params.id;
         const quiz = await Quiz.findById(quizId).populate('questions');
+        if (!quiz) {
+            throw new Error('The quiz not found');
+        }
 
         const token = generateToken(quiz._id);
 

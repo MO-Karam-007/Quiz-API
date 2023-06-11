@@ -59,6 +59,9 @@ exports.changeStatus = async (req, res) => {
         const user = await User.find({ _id: createdBy });
         const _id = req.params.id;
         const checkQuiz = await Quiz.findById(_id);
+        if (!checkQuiz) {
+            throw new Error('This quiz not exists');
+        }
 
         if (user[0].role != 'instructor') {
             throw new Error(
