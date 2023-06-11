@@ -104,17 +104,17 @@ exports.createQuiz = async (req, res) => {
         }
 
         const midTermState = await Quiz.find({
-            id,
+            createdBy: id,
             status: 'draft',
             category: 'mid_term',
         });
         const finalState = await Quiz.find({
-            id,
+            createdBy: id,
             status: 'draft',
             category: 'final',
         });
         const quizState = await Quiz.find({
-            id,
+            createdBy: id,
             status: 'draft',
             category: 'quiz',
         });
