@@ -9,7 +9,9 @@ quizRouter
     .post(verfyToken, quizController.createQuiz);
 quizRouter.route('/quiz/:id').get(quizController.getById);
 
-quizRouter.route('/quizbycategory').get(quizController.getQuizViaCategory);
+quizRouter
+    .route('/quizbycategory')
+    .get(verfyToken, quizController.getQuizViaCategory);
 
 // Quiz
 quizRouter.route('/test/:quizId').get(quizController.getQuiz);

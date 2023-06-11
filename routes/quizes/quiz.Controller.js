@@ -65,10 +65,13 @@ exports.getUserQuiz = async (req, res) => {
 };
 exports.getQuizViaCategory = async (req, res) => {
     try {
+        const _id = req.tokenValue._id;
         const category = req.query.category;
-        const quiz = await Quiz.find({ category, status: 'publish' }).populate(
-            'createdBy'
-        );
+        const quiz = await Quiz.find({
+            _id,
+            category,
+            status: 'publish',
+        }).populate('createdBy');
 
         res.json({
             quiz,
