@@ -5,13 +5,25 @@ const Question = require('../../models/Question');
 const { generateToken } = require('../../middlewares/jwt');
 exports.getLastExam = async (req, res) => {
     try {
-        const time = new Date(Date.now() - 3600000 * 24);
+        const twentyFourHoursAgo = new Date();
+        twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24);
+
         const lastExam = await Quiz.findOne({
             status: 'publish',
-            createdAt: { $gte: time },
+            createdAt: { $gte: twentyFourHoursAgo },
         }).sort({ createdAt: -1 });
 
-        res.json({ lastExam });
+        const lastUpdateExam = await Quiz.findOne({
+            status: 'publish',
+            updatedAt: { $gte: twentyFourHoursAgo },
+        }).sort({ updatedAt: -1 });
+        let lastestExam;
+        if (lastExam.createdAt > lastUpdateExam.updatedAt) {
+            lastestExam = lastExam;
+        } else {
+            lastestExam = lastUpdateExam;
+        }
+        res.json({ lastestExam });
     } catch (error) {
         res.json({
             status: 'fail',
