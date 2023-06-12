@@ -58,7 +58,7 @@ exports.completeSignUp = async (req, res) => {
         if (!user) {
             throw new Error('This user does not exist');
         }
-        const newUser = await findOneAndUpdate(
+        const newUser = await User.findOneAndUpdate(
             { _id },
             {
                 username,
