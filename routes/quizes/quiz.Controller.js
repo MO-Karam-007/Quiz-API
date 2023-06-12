@@ -179,7 +179,7 @@ exports.createQuiz = async (req, res) => {
 exports.getQuiz = async (req, res) => {
     try {
         const quizId = req.params.quizId;
-        console.log(quizId);
+
 
         const questtions = await Question.find({ quizId }).populate('quizId');
         if (questtions.length === 0) {

@@ -12,5 +12,8 @@ authRouter.route('/login').post(authController.login);
 authRouter.route('/send_email').post(verfyToken, authController.sendEmail);
 authRouter.route('/verify').post(verfyToken, authController.verifyEmail);
 authRouter.route('/get_students').get(authController.getAllStd);
+authRouter
+    .route('/complete_sign_up')
+    .put(verfyToken, authController.completeSignUp);
 
 module.exports = authRouter;

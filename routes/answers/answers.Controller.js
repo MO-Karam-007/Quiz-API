@@ -1,5 +1,6 @@
 const Submit = require('../../models/Submit');
 const axios = require('axios');
+const Question = require('../../models/Question');
 const Quiz = require('../../models/Quiz');
 const Score = require('../../models/Score');
 const User = require('../../models/User');
@@ -14,16 +15,41 @@ exports.getAnswers = async (req, res) => {
 
         let score = 0;
         var userId = req.tokenValue._id;
+
         userId = await User.findById(userId);
         const { answers } = req.body;
         const quiz = await Quiz.findById(quizId);
+        console.log(`1`);
+
         if (!quiz) {
             throw new Error('Quiz not found');
         }
+        console.log(`1`);
 
-        const fullQuiz = await axios.get(
-            `https://good-lime-horse-robe.cyclic.app/v1/test/${quizId}`
-        );
+        const questtions = await Question.find({ quizId }).populate('quizId');
+        console.log(`questions`, questtions);
+        // if (questtions.length === 0) {
+        //     throw new Error('No questions found for the specified quiz ID');
+        // }
+        const formatQuestions = questtions.map((question) => {
+            return {
+                _id: question._id,
+                question: question.question,
+                options: question.options,
+                correct_answer: question.correctAnswer,
+                lecture_no: question.lecture_no,
+                type: question.type,
+            };
+        });
+        const fullQuiz = {
+            title: questtions[0].quizId['title'],
+            category: questtions[0].quizId['category'],
+            description: questtions[0].quizId['description'],
+            questions: formatQuestions,
+        };
+        // const fullQuiz = await axios.get(
+        //     `https://good-lime-horse-robe.cyclic.app/v1/test/${quizId}`
+        // );
         const { questions } = fullQuiz.data;
         console.log(`fullQuiz`, questions, questions.length);
 
@@ -94,7 +120,6 @@ exports.getAnswers = async (req, res) => {
                 submitedAnswers.push(newanswer);
             } else if (questions[i].type == 'open_ended') {
                 // questions[i].correct_answer === answer
-                
             }
         }
 

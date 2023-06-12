@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const { generateToken } = require('../../middlewares/jwt');
 
 const nodemailer = require('nodemailer');
+const { findOneAndUpdate } = require('../../models/Quiz');
 exports.register = async (req, res) => {
     try {
         const { first_name, last_name, email, role, bio, username } = req.body;
@@ -40,6 +41,36 @@ exports.register = async (req, res) => {
             msg: 'Signed up',
             user: user,
             token: user['token'],
+        });
+    } catch (error) {
+        res.json({
+            status: 'fail',
+            Error: error.message,
+        });
+    }
+};
+
+exports.completeSignUp = async (req, res) => {
+    try {
+        const { bio, profileImageUrl, username } = req.body;
+        const _id = req.tokenValue._id;
+        const user = await User.findById(_id);
+        if (!user) {
+            throw new Error('This user does not exist');
+        }
+        const newUser = await findOneAndUpdate(
+            { _id },
+            {
+                username,
+                profileImageUrl,
+                bio,
+            },
+            {
+                new: true,
+            }
+        );
+        res.json({
+            newUser,
         });
     } catch (error) {
         res.json({
