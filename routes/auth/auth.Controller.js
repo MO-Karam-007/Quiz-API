@@ -80,6 +80,11 @@ exports.completeSignUp = async (req, res) => {
     }
 };
 
+exports.getSignedUpUser = async (req, res) => {
+    const _id = req.tokenValue._id;
+    const user = await User.findById(_id);
+    res.json({ user });
+};
 exports.sendEmail = async (req, res) => {
     try {
         const code = Math.floor(Math.random() * 100000);
