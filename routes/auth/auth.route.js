@@ -2,7 +2,7 @@ const express = require('express');
 const authRouter = express.Router();
 const authController = require('./auth.Controller');
 const { verfyToken } = require('../../middlewares/jwt');
-const { upload } = require('../../uploads/uploud.js');
+// const { upload } = require('../../uploads/uploud.js');
 const multer = require('multer');
 
 // authRouter.route('/verify_user').get(authController.verify);
