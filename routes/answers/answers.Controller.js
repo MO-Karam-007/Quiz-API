@@ -17,6 +17,9 @@ exports.getAnswers = async (req, res) => {
         var userId = req.tokenValue._id;
 
         userId = await User.findById(userId);
+        if (userId.role != 'student') {
+            throw new Error('Submition for students only');
+        }
         const { answers } = req.body;
         const quiz = await Quiz.findById(quizId).populate('questions');
         console.log(`1`);
@@ -80,20 +83,13 @@ exports.getAnswers = async (req, res) => {
                     update,
                     options
                 );
-                console.log(`Working`);
 
                 submitedAnswers.push(newanswer);
             } else if (questions[i].type == 'true_false') {
-                console.log(
-                    questions[i].correctAnswer,
-                    '=====',
-                    JSON.parse(answer)
-                );
+                console.log(questions[i].correctAnswer, '=====', answer);
 
                 console.log(`-----------------------`);
-                questions[i].correctAnswer === JSON.parse(answer)
-                    ? score++
-                    : score;
+                questions[i].correctAnswer === answer ? score++ : score;
                 // Create a new Answer document for each question and answer'
                 const filters = {
                     userId: userId._id,
@@ -114,8 +110,25 @@ exports.getAnswers = async (req, res) => {
                 );
                 submitedAnswers.push(newanswer);
             } else if (questions[i].type == 'open_ended') {
-                // questions[i].correct_answer === answer
-                return score++;
+                score++;
+                const filters = {
+                    userId: userId._id,
+                    quizId,
+                    questionId,
+                };
+                const update = {
+                    userId: userId._id,
+                    quizId,
+                    questionId,
+                    answer,
+                };
+
+                const newanswer = await Submit.findOneAndUpdate(
+                    filters,
+                    update,
+                    options
+                );
+                submitedAnswers.push(newanswer);
             }
         }
 
@@ -131,6 +144,46 @@ exports.getAnswers = async (req, res) => {
         });
     } catch (error) {
         res.status(401).json({
+            msg: error.message,
+        });
+    }
+};
+
+exports.getDegress = async (req, res) => {
+    // const questtions = await Question.find({ quizId }).populate('quizId');
+
+    // if (questtions.length === 0) {
+    //     throw new Error('No questions found for the specified quiz ID');
+    // }
+    // console.log(`questions`, quiz.questions.map((value)=>{
+    //     return {
+    //         correctAnswer:
+    //     }
+    // }));
+    // console.log(`Well 😂😂`);
+    // const fullQuiz = {
+    //     title: questtions[0].quizId['title'],
+    //     category: questtions[0].quizId['category'],
+    //     description: questtions[0].quizId['description'],
+    //     questions: formatQuestions,
+    // };
+    // const fullQuiz = await axios.get(
+    //     `https://good-lime-horse-robe.cyclic.app/v1/test/${quizId}`
+    // );
+    try {
+        var userId = req.tokenValue._id;
+        // var user = await User.findById(userId);
+        var score = await Score.find({ userId }).populate('quizId');
+        var degress = score.map((value) => {
+            return {
+                title: value.quizId.title,
+                score: value.score,
+            };
+        });
+
+        res.json({ degress });
+    } catch (error) {
+        res.json({
             msg: error.message,
         });
     }

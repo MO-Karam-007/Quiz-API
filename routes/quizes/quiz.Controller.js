@@ -180,28 +180,30 @@ exports.getQuiz = async (req, res) => {
     try {
         const quizId = req.params.quizId;
 
-
-        const questtions = await Question.find({ quizId }).populate('quizId');
+        const questtions = await Quiz.findById(quizId).populate('questions');
         if (questtions.length === 0) {
             throw new Error('No questions found for the specified quiz ID');
         }
 
-        const formatQuestions = questtions.map((question) => {
-            return {
-                _id: question._id,
-                question: question.question,
-                options: question.options,
-                correct_answer: question.correctAnswer,
-                lecture_no: question.lecture_no,
-                type: question.type,
-            };
-        });
+        // const formatQuestions = questtions.map((question) => {
+        //     return {
+        //         _id: question._id,
+        //         question: question.question,
+        //         options: question.options,
+        //         correct_answer: question.correctAnswer,
+        //         lecture_no: question.lecture_no,
+        //         type: question.type,
+        //     };
+        // });
 
+        // res.json({
+        //     title: questtions[0].quizId['title'],
+        //     category: questtions[0].quizId['category'],
+        //     description: questtions[0].quizId['description'],
+        //     questions: formatQuestions,
+        // });
         res.json({
-            title: questtions[0].quizId['title'],
-            category: questtions[0].quizId['category'],
-            description: questtions[0].quizId['description'],
-            questions: formatQuestions,
+            questtions,
         });
     } catch (error) {
         res.status(401).json({
