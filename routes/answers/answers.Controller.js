@@ -18,39 +18,34 @@ exports.getAnswers = async (req, res) => {
 
         userId = await User.findById(userId);
         const { answers } = req.body;
-        const quiz = await Quiz.findById(quizId);
+        const quiz = await Quiz.findById(quizId).populate('questions');
         console.log(`1`);
 
         if (!quiz) {
             throw new Error('Quiz not found');
         }
-        console.log(`1`);
 
-        const questtions = await Question.find({ quizId }).populate('quizId');
-        console.log(`questions`, questtions);
+        // const questtions = await Question.find({ quizId }).populate('quizId');
+
         // if (questtions.length === 0) {
         //     throw new Error('No questions found for the specified quiz ID');
         // }
-        const formatQuestions = questtions.map((question) => {
-            return {
-                _id: question._id,
-                question: question.question,
-                options: question.options,
-                correct_answer: question.correctAnswer,
-                lecture_no: question.lecture_no,
-                type: question.type,
-            };
-        });
-        const fullQuiz = {
-            title: questtions[0].quizId['title'],
-            category: questtions[0].quizId['category'],
-            description: questtions[0].quizId['description'],
-            questions: formatQuestions,
-        };
+        // console.log(`questions`, quiz.questions.map((value)=>{
+        //     return {
+        //         correctAnswer:
+        //     }
+        // }));
+        // console.log(`Well 😂😂`);
+        // const fullQuiz = {
+        //     title: questtions[0].quizId['title'],
+        //     category: questtions[0].quizId['category'],
+        //     description: questtions[0].quizId['description'],
+        //     questions: formatQuestions,
+        // };
         // const fullQuiz = await axios.get(
         //     `https://good-lime-horse-robe.cyclic.app/v1/test/${quizId}`
         // );
-        const { questions } = fullQuiz.data;
+        const questions = quiz.questions;
         console.log(`fullQuiz`, questions, questions.length);
 
         for (let i = 0; i < questions.length; i++) {
@@ -60,11 +55,11 @@ exports.getAnswers = async (req, res) => {
             // ["true","Layla","Layla","Layla",true,true,true]
 
             if (questions[i].type == 'multiple_choice') {
-                console.log(questions[i].correct_answer, '=====', answers[i]);
-                console.log(questions[i].correct_answer == answers[i]);
+                console.log(questions[i].correctAnswer, '=====', answers[i]);
+                console.log(questions[i].correctAnswer == answers[i]);
 
                 console.log(`-----------------------`);
-                questions[i].correct_answer === answer ? score++ : score;
+                questions[i].correctAnswer === answer ? score++ : score;
                 console.log(`score`, score);
 
                 // Create a new Answer document for each question and answer'
@@ -90,13 +85,13 @@ exports.getAnswers = async (req, res) => {
                 submitedAnswers.push(newanswer);
             } else if (questions[i].type == 'true_false') {
                 console.log(
-                    questions[i].correct_answer,
+                    questions[i].correctAnswer,
                     '=====',
                     JSON.parse(answer)
                 );
 
                 console.log(`-----------------------`);
-                questions[i].correct_answer === JSON.parse(answer)
+                questions[i].correctAnswer === JSON.parse(answer)
                     ? score++
                     : score;
                 // Create a new Answer document for each question and answer'
@@ -120,6 +115,7 @@ exports.getAnswers = async (req, res) => {
                 submitedAnswers.push(newanswer);
             } else if (questions[i].type == 'open_ended') {
                 // questions[i].correct_answer === answer
+                return score++;
             }
         }
 

@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-
+// var multer = require('multer');
 var authRouter = require('./routes/auth/auth.route');
 var quizRouter = require('./routes/quizes/quiz.route');
 var questionRouter = require('./routes/Questions/questions.route');
@@ -30,6 +30,14 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(logger('dev'));
 
+// app.use(
+//     multer({
+//         dest: './uploads',
+//         rename: function (fieldname, filename) {
+//             return filename;
+//         },
+//     })
+// );
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
