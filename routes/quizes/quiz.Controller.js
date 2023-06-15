@@ -5,24 +5,45 @@ const Question = require('../../models/Question');
 const { generateToken } = require('../../middlewares/jwt');
 exports.getLastExam = async (req, res) => {
     try {
-        const twentyFourHoursAgo = new Date();
-        twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24);
+        const fiveMin = new Date();
+        console.log(`Done`);
+
+        fiveMin.setMinutes(fiveMin.getMinutes() - 5);
 
         const lastExam = await Quiz.findOne({
             status: 'publish',
-            createdAt: { $gte: twentyFourHoursAgo },
+            createdAt: { $gte: fiveMin },
         }).sort({ createdAt: -1 });
 
         const lastUpdateExam = await Quiz.findOne({
             status: 'publish',
-            updatedAt: { $gte: twentyFourHoursAgo },
+            updatedAt: { $gte: fiveMin },
         }).sort({ updatedAt: -1 });
+
+        if (!lastExam || !lastUpdateExam) {
+            throw new Error('There is no recent exams');
+        }
+
         let lastestExam;
         if (lastExam.createdAt > lastUpdateExam.updatedAt) {
             lastestExam = lastExam;
         } else {
             lastestExam = lastUpdateExam;
         }
+        console.log(`Done`);
+        console.log(`lastestExam`, lastestExam);
+        if (lastExam) {
+            const currentTime = new Date();
+            const examCreationTime =
+                lastExam.createdAt || lastUpdateExam.updatedAt;
+
+            if (currentTime - examCreationTime > 5 * 60 * 1000) {
+                // 5 minutes in milliseconds
+                // Remove the exam from the database or take necessary actions
+                lastestExam = null;
+            }
+        }
+
         res.json({ lastestExam });
     } catch (error) {
         res.json({
