@@ -30,8 +30,7 @@ exports.getLastExam = async (req, res) => {
         } else {
             lastestExam = lastUpdateExam;
         }
-        console.log(`Done`);
-        console.log(`lastestExam`, lastestExam);
+
         if (lastExam) {
             const currentTime = new Date();
             const examCreationTime =
