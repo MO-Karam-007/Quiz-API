@@ -99,6 +99,8 @@ exports.getDegress = async (req, res) => {
                 title: value.quizId.title,
                 score: value.score,
                 _id: value.quizId._id,
+                description: value.quizId.description,
+                category: value.quizId.category,
             };
         });
 
