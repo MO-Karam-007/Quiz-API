@@ -8,7 +8,7 @@ exports.getLastExam = async (req, res) => {
         const fiveMin = new Date();
         console.log(`Done`);
 
-        fiveMin.setMinutes(fiveMin.getMinutes() - 5);
+        fiveMin.setMinutes(fiveMin.getMinutes() - 60);
 
         const lastExam = await Quiz.findOne({
             status: 'publish',
