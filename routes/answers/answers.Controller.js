@@ -3,7 +3,7 @@ const Submit = require('../../models/Submit');
 const Quiz = require('../../models/Quiz');
 const Score = require('../../models/Score');
 const User = require('../../models/User');
-const mongoose = require('mongoose');
+
 exports.getAnswers = async (req, res) => {
     try {
         console.log(`Lol`);
@@ -17,9 +17,21 @@ exports.getAnswers = async (req, res) => {
         let score = 0;
         var userId = req.tokenValue._id;
         userId = await User.findById(userId);
+
+        //Check User If student
         if (userId.role != 'student') {
             throw new Error('Submition for students only');
         }
+        //Check If submitted before
+        const submittedBefore = await Submit.findOne({
+            quizId,
+            userId,
+        });
+
+        if (submittedBefore) {
+            throw new Error('You submitted this exam before');
+        }
+        // Take the answers
         const { answers } = req.body;
         const quiz = await Quiz.findById(quizId).populate('questions');
 
@@ -37,122 +49,38 @@ exports.getAnswers = async (req, res) => {
             // ["true","Layla","Layla","Layla",true,true,true]
 
             if (questions[i].type == 'multiple_choice') {
-                console.log(questions[i].correctAnswer, '=====', answers[i]);
-                console.log(questions[i].correctAnswer == answers[i]);
+                console.log(questions[i].correctAnswer, '=====', answer);
+                console.log(questions[i].correctAnswer == answer);
 
-                console.log(`-----------------------`);
+                console.log(`----------------------- multiple_choice`);
                 questions[i].correctAnswer === answer ? score++ : score;
                 console.log(`score`, score);
 
-                const findSubmit = await Submit.find({
-                    userId: userId._id,
-                    quizId,
-                });
-                console.log(`findSubmit`, findSubmit);
-                if (findSubmit) {
-                    throw new Error('You submitted this before');
-                }
-                const newanswer = await Submit.create({
-                    userId: userId._id,
-                    quizId,
-                    questionId,
-                    score,
-                });
-
-                // Create a new Answer document for each question and answer'
-                // const filters = {
-                //     userId: userId._id,
-                //     quizId,
-                //     questionId,
-                // };
-                // const update = {
-                //     userId: userId._id,
-                //     quizId,
-                //     questionId,
-                //     answer,
-                // };
-                // const options = {
-                //     upsert: true,
-                //     new: true,
-                // };
-                // console.log(`WOrk`);
-                // const newanswer = await Submit.findOneAndUpdate(
-                //     filters,
-                //     update,
-                //     options
-                // );
-
-                submitedAnswers.push(newanswer);
+                submitedAnswers.push(answer);
             } else if (questions[i].type == 'true_false') {
                 console.log(questions[i].correctAnswer, '=====', answer);
+                console.log(questions[i].correctAnswer == answer);
 
-                console.log(`-----------------------`);
+                console.log(`----------------------- true_false`);
                 questions[i].correctAnswer === answer ? score++ : score;
-                // Create a new Answer document for each question and answer'
-                // const filters = {
-                //     userId: userId._id,
-                //     quizId,
-                //     questionId,
-                // };
-                // const update = {
-                //     userId: userId._id,
-                //     quizId,
-                //     questionId,
-                //     answer,
-                // };
+                console.log(`score`, score);
 
-                // const newanswer = await Submit.findOneAndUpdate(
-                //     filters,
-                //     update,
-                //     options
-                // );
-                const findSubmit = await Submit.find({
-                    userId: userId._id,
-                    quizId,
-                });
-                console.log(`findSubmit`, findSubmit);
-                if (findSubmit) {
-                    throw new Error('You submitted this before');
-                }
-                const newanswer = await Submit.create({
-                    userId: userId._id,
-                    quizId,
-                    questionId,
-                    score,
-                });
-                submitedAnswers.push(newanswer);
+                submitedAnswers.push(answer);
             } else if (questions[i].type == 'open_ended') {
                 score++;
-                const filters = {
-                    userId: userId._id,
-                    quizId,
-                    questionId,
-                };
-                const update = {
-                    userId: userId._id,
-                    quizId,
-                    questionId,
-                    answer,
-                };
 
-                const newanswer = await Submit.findOneAndUpdate(
-                    filters,
-                    update,
-                    options
-                );
-                submitedAnswers.push(newanswer);
+                submitedAnswers.push(answer);
             }
         }
 
-        await Score.findOneAndUpdate(
-            { userId, quizId },
-            { userId, quizId, score },
-            options
-        );
-
+        const addSubmition = await Submit.create({
+            userId,
+            quizId,
+            score,
+        });
         res.json({
             score,
-            submitedAnswers,
+            addSubmition,
         });
     } catch (error) {
         res.status(401).json({

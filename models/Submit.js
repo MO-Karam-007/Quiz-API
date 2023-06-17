@@ -10,11 +10,11 @@ const submitSchame = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: [true, 'User id required'],
     },
-    questionId: {
-        ref: 'Question',
-        type: mongoose.Schema.Types.ObjectId,
-        required: [true, 'Question id required'],
-    },
+    // questionId: {
+    //     ref: 'Question',
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     required: [true, 'Question id required'],
+    // },
     quizId: {
         ref: 'Quiz',
         type: mongoose.Schema.Types.ObjectId,
