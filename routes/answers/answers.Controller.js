@@ -1,13 +1,14 @@
 const Submit = require('../../models/Submit');
-const axios = require('axios');
-const Question = require('../../models/Question');
+
 const Quiz = require('../../models/Quiz');
 const Score = require('../../models/Score');
 const User = require('../../models/User');
+const mongoose = require('mongoose');
 exports.getAnswers = async (req, res) => {
     try {
+        console.log(`Lol`);
         const options = {
-            upsert: true,
+            upsert: true, // if not found will insert if found will update
             new: true, // Return the updated document
         };
         const quizId = req.params.quizId;
@@ -15,39 +16,17 @@ exports.getAnswers = async (req, res) => {
 
         let score = 0;
         var userId = req.tokenValue._id;
-
         userId = await User.findById(userId);
         if (userId.role != 'student') {
             throw new Error('Submition for students only');
         }
         const { answers } = req.body;
         const quiz = await Quiz.findById(quizId).populate('questions');
-        console.log(`1`);
 
         if (!quiz) {
             throw new Error('Quiz not found');
         }
 
-        // const questtions = await Question.find({ quizId }).populate('quizId');
-
-        // if (questtions.length === 0) {
-        //     throw new Error('No questions found for the specified quiz ID');
-        // }
-        // console.log(`questions`, quiz.questions.map((value)=>{
-        //     return {
-        //         correctAnswer:
-        //     }
-        // }));
-        // console.log(`Well 😂😂`);
-        // const fullQuiz = {
-        //     title: questtions[0].quizId['title'],
-        //     category: questtions[0].quizId['category'],
-        //     description: questtions[0].quizId['description'],
-        //     questions: formatQuestions,
-        // };
-        // const fullQuiz = await axios.get(
-        //     `https://good-lime-horse-robe.cyclic.app/v1/test/${quizId}`
-        // );
         const questions = quiz.questions;
         console.log(`fullQuiz`, questions, questions.length);
 
@@ -65,24 +44,43 @@ exports.getAnswers = async (req, res) => {
                 questions[i].correctAnswer === answer ? score++ : score;
                 console.log(`score`, score);
 
-                // Create a new Answer document for each question and answer'
-                const filters = {
+                const findSubmit = await Submit.find({
+                    userId: userId._id,
+                    quizId,
+                });
+                console.log(`findSubmit`, findSubmit);
+                if (findSubmit) {
+                    throw new Error('You submitted this before');
+                }
+                const newanswer = await Submit.create({
                     userId: userId._id,
                     quizId,
                     questionId,
-                };
-                const update = {
-                    userId: userId._id,
-                    quizId,
-                    questionId,
-                    answer,
-                };
+                    score,
+                });
 
-                const newanswer = await Submit.findOneAndUpdate(
-                    filters,
-                    update,
-                    options
-                );
+                // Create a new Answer document for each question and answer'
+                // const filters = {
+                //     userId: userId._id,
+                //     quizId,
+                //     questionId,
+                // };
+                // const update = {
+                //     userId: userId._id,
+                //     quizId,
+                //     questionId,
+                //     answer,
+                // };
+                // const options = {
+                //     upsert: true,
+                //     new: true,
+                // };
+                // console.log(`WOrk`);
+                // const newanswer = await Submit.findOneAndUpdate(
+                //     filters,
+                //     update,
+                //     options
+                // );
 
                 submitedAnswers.push(newanswer);
             } else if (questions[i].type == 'true_false') {
@@ -91,23 +89,37 @@ exports.getAnswers = async (req, res) => {
                 console.log(`-----------------------`);
                 questions[i].correctAnswer === answer ? score++ : score;
                 // Create a new Answer document for each question and answer'
-                const filters = {
-                    userId: userId._id,
-                    quizId,
-                    questionId,
-                };
-                const update = {
-                    userId: userId._id,
-                    quizId,
-                    questionId,
-                    answer,
-                };
+                // const filters = {
+                //     userId: userId._id,
+                //     quizId,
+                //     questionId,
+                // };
+                // const update = {
+                //     userId: userId._id,
+                //     quizId,
+                //     questionId,
+                //     answer,
+                // };
 
-                const newanswer = await Submit.findOneAndUpdate(
-                    filters,
-                    update,
-                    options
-                );
+                // const newanswer = await Submit.findOneAndUpdate(
+                //     filters,
+                //     update,
+                //     options
+                // );
+                const findSubmit = await Submit.find({
+                    userId: userId._id,
+                    quizId,
+                });
+                console.log(`findSubmit`, findSubmit);
+                if (findSubmit) {
+                    throw new Error('You submitted this before');
+                }
+                const newanswer = await Submit.create({
+                    userId: userId._id,
+                    quizId,
+                    questionId,
+                    score,
+                });
                 submitedAnswers.push(newanswer);
             } else if (questions[i].type == 'open_ended') {
                 score++;
@@ -150,26 +162,6 @@ exports.getAnswers = async (req, res) => {
 };
 
 exports.getDegress = async (req, res) => {
-    // const questtions = await Question.find({ quizId }).populate('quizId');
-
-    // if (questtions.length === 0) {
-    //     throw new Error('No questions found for the specified quiz ID');
-    // }
-    // console.log(`questions`, quiz.questions.map((value)=>{
-    //     return {
-    //         correctAnswer:
-    //     }
-    // }));
-    // console.log(`Well 😂😂`);
-    // const fullQuiz = {
-    //     title: questtions[0].quizId['title'],
-    //     category: questtions[0].quizId['category'],
-    //     description: questtions[0].quizId['description'],
-    //     questions: formatQuestions,
-    // };
-    // const fullQuiz = await axios.get(
-    //     `https://good-lime-horse-robe.cyclic.app/v1/test/${quizId}`
-    // );
     try {
         var userId = req.tokenValue._id;
         // var user = await User.findById(userId);
@@ -178,6 +170,7 @@ exports.getDegress = async (req, res) => {
             return {
                 title: value.quizId.title,
                 score: value.score,
+                _id: value.quizId._id,
             };
         });
 
