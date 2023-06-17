@@ -40,6 +40,11 @@ exports.getAnswers = async (req, res) => {
         }
 
         const questions = quiz.questions;
+        const correct_answers = questions.map((value) => {
+            return {
+                correctAnswer: value.correctAnswer,
+            };
+        });
         console.log(`fullQuiz`, questions, questions.length);
 
         for (let i = 0; i < questions.length; i++) {
@@ -81,6 +86,8 @@ exports.getAnswers = async (req, res) => {
         res.json({
             score,
             addSubmition,
+            submitedAnswers,
+            correct_answers,
         });
     } catch (error) {
         res.status(401).json({
