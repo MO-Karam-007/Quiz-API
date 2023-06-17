@@ -36,7 +36,7 @@ exports.getLastExam = async (req, res) => {
             const examCreationTime =
                 lastExam.createdAt || lastUpdateExam.updatedAt;
 
-            if (currentTime - examCreationTime > 5 * 60 * 1000) {
+            if (currentTime - examCreationTime > 60 * 60 * 1000) {
                 // 5 minutes in milliseconds
                 // Remove the exam from the database or take necessary actions
                 lastestExam = null;
