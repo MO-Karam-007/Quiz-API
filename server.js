@@ -19,6 +19,6 @@ mongoose
         console.log(`Error`, err);
     });
 
-server.listen(process.env.PORT || 3030, () => {
+server.listen(process.env.PORT || 9090, () => {
     return console.log('Server is running');
 });
