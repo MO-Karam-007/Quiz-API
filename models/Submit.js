@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const submitSchame = new mongoose.Schema({
     answer: {
-        type: mongoose.Schema.Types.Mixed,
+        type: [String],
         default: 0,
     },
     userId: {
@@ -10,15 +10,15 @@ const submitSchame = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: [true, 'User id required'],
     },
-    // questionId: {
-    //     ref: 'Question',
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     required: [true, 'Question id required'],
-    // },
+
     quizId: {
         ref: 'Quiz',
         type: mongoose.Schema.Types.ObjectId,
         required: [true, 'Quiz id required'],
+    },
+    score: {
+        type: Number,
+        default: 0,
     },
 });
 submitSchame.index({ userId: 1, questionId: 1 }, { unique: true });

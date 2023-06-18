@@ -48,7 +48,7 @@ exports.getAnswers = async (req, res) => {
         console.log(`fullQuiz`, questions, questions.length);
 
         for (let i = 0; i < questions.length; i++) {
-            const questionId = questions[i]._id;
+            // const questionId = questions[i]._id;
             const answer = answers[i];
 
             // ["true","Layla","Layla","Layla",true,true,true]
@@ -82,16 +82,15 @@ exports.getAnswers = async (req, res) => {
             userId,
             quizId,
             score,
+            answer: submitedAnswers,
         });
-        await Score.create({
-            userId,
-            quizId,
-            score,
-        });
+        // await Score.create({
+        //     userId,
+        //     quizId,
+        //     score,
+        // });
         res.json({
-            score,
             addSubmition,
-            submitedAnswers,
             correct_answers,
         });
     } catch (error) {
@@ -105,7 +104,7 @@ exports.getDegress = async (req, res) => {
     try {
         var userId = req.tokenValue._id;
         // var user = await User.findById(userId);
-        var score = await Score.find({ userId }).populate('quizId');
+        var score = await Submit.find({ userId }).populate('quizId');
         var degress = score.map((value) => {
             return {
                 title: value.quizId.title,
