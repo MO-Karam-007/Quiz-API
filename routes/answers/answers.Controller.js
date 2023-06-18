@@ -104,7 +104,9 @@ exports.getDegress = async (req, res) => {
     try {
         var userId = req.tokenValue._id;
         // var user = await User.findById(userId);
-        var score = await Submit.find({ userId }).populate('quizId');
+        var score = await Submit.find({ userId })
+            .populate('quizId')
+            .sort({ createAt: 1 });
         var degress = score.map((value) => {
             return {
                 title: value.quizId.title,
