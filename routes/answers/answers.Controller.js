@@ -83,6 +83,11 @@ exports.getAnswers = async (req, res) => {
             quizId,
             score,
         });
+        await Score.create({
+            userId,
+            quizId,
+            score,
+        });
         res.json({
             score,
             addSubmition,
