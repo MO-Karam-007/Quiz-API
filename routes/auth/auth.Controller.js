@@ -4,10 +4,9 @@ const bcrypt = require('bcryptjs');
 const { generateToken } = require('../../middlewares/jwt');
 
 const nodemailer = require('nodemailer');
-const { findOneAndUpdate } = require('../../models/Quiz');
 exports.register = async (req, res) => {
     try {
-        const { first_name, last_name, email, role, bio, username } = req.body;
+        const { first_name, last_name, email, role } = req.body;
         let password = req.body.password;
 
         var stCode = Math.floor(Math.random() * 10000);
@@ -28,8 +27,7 @@ exports.register = async (req, res) => {
             password,
             first_name,
             last_name,
-            bio,
-            username,
+
             // profileImageUrl: req.files,
             ...(role === 'student' && { stCode }),
         });

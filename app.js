@@ -18,6 +18,24 @@ const cors = require('cors');
 
 var app = express();
 
+// Connect to Database
+require('dotenv').config({});
+
+const mongoose = require('mongoose');
+
+mongoose
+    .connect(
+        process.env.DB_URL.replace('<PASSWORD>', process.env.DB_PASSWORD),
+        {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        }
+    )
+    .then(console.log(`DB Connected`))
+
+    .catch((err) => {
+        console.log(`Error`, err);
+    });
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -53,6 +71,9 @@ app.use('/v1', scoreRouter);
 app.use('/v1', dashboardRouter);
 app.use('/v1', qrRouter);
 
+app.use('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public'));
+});
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     next(createError(404));
