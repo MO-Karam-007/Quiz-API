@@ -9,10 +9,17 @@ exports.register = async (req, res) => {
         const { first_name, last_name, email, role } = req.body;
         let password = req.body.password;
 
-        var stCode = Math.floor(Math.random() * 10000);
+        var stCode = req.body.stCode;
         // const code = Math.floor(Math.random() * 100000);
 
-        if (!email || !password || !role || !first_name || !last_name) {
+        if (
+            !email ||
+            !password ||
+            !role ||
+            !first_name ||
+            !last_name ||
+            !stCode
+        ) {
             throw new Error('all data requird');
         }
         let user = await User.findOne({ email });
