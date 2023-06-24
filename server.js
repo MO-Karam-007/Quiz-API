@@ -10,7 +10,7 @@ const refreshInterval = 15000; // 5 seconds
 function refreshServer() {
     server.close(() => {
         console.log('Server is refreshed');
-        server.listen(3000); // Change the port number if needed
+        server.listen(process.env.PORT || 9090); // Change the port number if needed
     });
 }
 
