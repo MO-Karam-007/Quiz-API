@@ -10,6 +10,7 @@ exports.register = async (req, res) => {
         let password = req.body.password;
 
         var stCode = req.body.stCode;
+        console.log(`LSTCODE`);
         // const code = Math.floor(Math.random() * 100000);
 
         if (
