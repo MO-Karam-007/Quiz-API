@@ -3,6 +3,23 @@ const app = require('./app');
 require('dotenv').config({});
 const server = http.createServer(app);
 
+// Set the refresh interval
+const refreshInterval = 5000; // 5 seconds
+
+// Function to refresh the server
+function refreshServer() {
+    server.close(() => {
+        console.log('Server is refreshed');
+        server.listen(3000); // Change the port number if needed
+    });
+}
+
+server.listen(process.env.PORT || 9090, () => {
+    return console.log('Server is running');
+});
+
+setInterval(refreshServer, refreshInterval);
+
 // const mongoose = require('mongoose');
 
 // mongoose
@@ -26,6 +43,3 @@ const server = http.createServer(app);
 //         console.log('We are connected');
 //     }
 // });
-server.listen(process.env.PORT || 9090, () => {
-    return console.log('Server is running');
-});
