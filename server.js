@@ -4,7 +4,7 @@ require('dotenv').config({});
 const server = http.createServer(app);
 
 // Set the refresh interval
-const refreshInterval = 5000; // 5 seconds
+const refreshInterval = 15000; // 5 seconds
 
 // Function to refresh the server
 function refreshServer() {
