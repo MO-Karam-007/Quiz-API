@@ -1,15 +1,11 @@
 const Quiz = require('../../models/Quiz');
 const User = require('../../models/User');
-
-const Question = require('../../models/Question');
 const { generateToken } = require('../../middlewares/jwt');
 exports.getLastExam = async (req, res) => {
     try {
         const fiveMin = new Date();
-        console.log(`Done`);
 
         fiveMin.setMinutes(fiveMin.getMinutes() - 60);
-
         const lastExam = await Quiz.findOne({
             status: 'publish',
             createdAt: { $gte: fiveMin },
@@ -153,7 +149,7 @@ exports.createQuiz = async (req, res) => {
             status: 'draft',
             category: 'quiz',
         });
-
+        // TO search is there is exams recently uploaded or not 
         if (category === 'mid_term') {
             if (midTermState.length != 0) {
                 throw new Error('There is one midterm in archive');
@@ -231,3 +227,5 @@ exports.getQuiz = async (req, res) => {
         });
     }
 };
+
+

@@ -1,19 +1,15 @@
 const Submit = require('../../models/Submit');
-
 const Quiz = require('../../models/Quiz');
-const Score = require('../../models/Score');
 const User = require('../../models/User');
 
 exports.getAnswers = async (req, res) => {
     try {
-        console.log(`Lol`);
         const options = {
             upsert: true, // if not found will insert if found will update
             new: true, // Return the updated document
         };
         const quizId = req.params.quizId;
         const submitedAnswers = [];
-
         let score = 0;
         var userId = req.tokenValue._id;
         userId = await User.findById(userId);
@@ -38,20 +34,17 @@ exports.getAnswers = async (req, res) => {
         if (!quiz) {
             throw new Error('Quiz not found');
         }
-
+        //What is happining behind the scene to submit answers
+        // Compere correct answers with correct answers
         const questions = quiz.questions;
         const correct_answers = questions.map((value) => {
             return {
                 correctAnswer: value.correctAnswer,
             };
         });
-        console.log(`fullQuiz`, questions, questions.length);
 
         for (let i = 0; i < questions.length; i++) {
-            // const questionId = questions[i]._id;
             const answer = answers[i];
-
-            // ["true","Layla","Layla","Layla",true,true,true]
 
             if (questions[i].type == 'multiple_choice') {
                 console.log(questions[i].correctAnswer, '=====', answer);
@@ -103,15 +96,15 @@ exports.getAnswers = async (req, res) => {
 exports.getDegress = async (req, res) => {
     try {
         var userId = req.tokenValue._id;
-        // var user = await User.findById(userId);
+        // Collect data using map method to response with required data
         var score = await Submit.find({ userId })
             .populate('quizId')
             .sort({ createAt: 1 });
         var degress = score.map((value) => {
             return {
+                _id: value.quizId._id,
                 title: value.quizId.title,
                 score: value.score,
-                _id: value.quizId._id,
                 description: value.quizId.description,
                 category: value.quizId.category,
             };

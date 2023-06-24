@@ -22,20 +22,22 @@ var app = express();
 require('dotenv').config({});
 
 const mongoose = require('mongoose');
+async function connectToDB() {
+    await mongoose
+        .connect(
+            process.env.DB_URL.replace('<PASSWORD>', process.env.DB_PASSWORD),
+            {
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+            }
+        )
+        .then(console.log(`DB Connected`))
 
-mongoose
-    .connect(
-        process.env.DB_URL.replace('<PASSWORD>', process.env.DB_PASSWORD),
-        {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        }
-    )
-    .then(console.log(`DB Connected`))
-
-    .catch((err) => {
-        console.log(`Error`, err);
-    });
+        .catch((err) => {
+            console.log(`Error`, err);
+        });
+}
+connectToDB();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

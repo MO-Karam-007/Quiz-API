@@ -16,7 +16,6 @@ exports.editArchive = async (req, res) => {
             { _id: quizId },
             { status: 'publish' }
         );
-        console.log(`quiz `, quiz);
         await Quiz.create(quiz).then(async () => {
             await Archive.findByIdAndDelete({
                 _id: quizId,
@@ -41,7 +40,6 @@ exports.getOneArchive = async (req, res) => {
         if (findQuiz.status === 'publish') {
             throw new Error('Not a draft this published before');
         }
-        console.log(`Cone 2`);
 
         res.json({
             findQuiz,
@@ -78,7 +76,6 @@ exports.changeStatus = async (req, res) => {
             createdBy
         );
 
-        console.log(checkQuiz.createdBy);
 
         if (checkQuiz.createdBy != createdBy) {
             throw new Error('You are not the creator of this exam');

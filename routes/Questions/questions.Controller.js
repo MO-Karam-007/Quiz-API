@@ -47,8 +47,8 @@ exports.createQues = async (req, res) => {
             options,
             openEndedSubmittedAnswer,
         } = req.body;
+        // Throw errors to interrupt the normal flow of the program 
         if (!type) {
-            console.log(`555`);
             throw new Error(
                 'Select question type (multiple choice, true false, open ended )'
             );

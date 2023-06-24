@@ -18,7 +18,7 @@ exports.register = async (req, res) => {
         let user = await User.findOne({ email });
 
         if (user) throw new Error('Email already exists');
-
+        // Throwing errors to interrupt the normal flow of the program
         if (password.length < 8) throw new Error('8 characters for password');
 
         user = await User.create({
@@ -27,8 +27,7 @@ exports.register = async (req, res) => {
             password,
             first_name,
             last_name,
-
-            // profileImageUrl: req.files,
+            // StCode is for students only
             ...(role === 'student' && { stCode }),
         });
 
