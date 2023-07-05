@@ -28,7 +28,9 @@ exports.register = async (req, res) => {
         if (user) throw new Error('Email already exists');
         // Throwing errors to interrupt the normal flow of the program
         if (password.length < 8) throw new Error('8 characters for password');
-
+        if (role === 'instructor' && stCode != 777) {
+            throw new Error("You don't have the correct key so try again");
+        }
         user = await User.create({
             role,
             email,
@@ -36,7 +38,8 @@ exports.register = async (req, res) => {
             first_name,
             last_name,
             // StCode is for students only
-            ...(role === 'student' && { stCode }),
+            // ...(role === 'student'  && { stCode }),
+            stCode,
         });
 
         const token = generateToken(user._id);
@@ -219,19 +222,48 @@ exports.sendEmail = async (req, res) => {
     }
 };
 exports.verifyEmail = async (req, res) => {
-    let counter = 0;
-    const code = req.body.code * 1;
-    const user = await User.findById(req.tokenValue._id).select('+verifyCode');
-    const userCode = user.verifyCode;
+    try {
+        const _id = req.tokenValue._id;
 
-    if (code != userCode) {
-        counter++;
+        const code = req.body.code * 1;
 
-        user.counter = counter;
-        await user.save();
+        const user = await User.findById(req.tokenValue._id).select(
+            '+verifyCode'
+        );
+
+        let counter = user.counter;
+
+        if (user.counter >= 3) {
+            throw new Error(
+                'You tried for 3 times , Please connect to our support team or wait for 6 hours'
+            );
+        }
+
+        if (code != user.verifyCode) {
+            // counter = counter++;
+            console.log(`user`, user);
+
+            // user.counter = counter;
+            await User.findByIdAndUpdate(
+                { _id },
+                {
+                    $inc: { counter: 1 },
+                },
+                { new: true, upsert: true }
+            );
+            throw new Error(`Wrong code for ${user.counter + 1} times`);
+        }
+
+        if (code == user.verifyCode)
+            // if (counter == 3) await user.findOneAndDelete({ email: user.email });
+            res.json({
+                status: 'Passed',
+                code,
+                counter,
+            });
+    } catch (error) {
+        res.json({ status: 'fail', Error: error.message });
     }
-    // if (counter == 3) await user.findOneAndDelete({ email: user.email });
-    res.send('Ok');
 };
 
 exports.login = async (req, res) => {
@@ -275,4 +307,8 @@ exports.getAllStd = async (req, res) => {
             Error: error.message,
         });
     }
+};
+
+const blockUser = async (req, res) => {
+    let block = [];
 };
