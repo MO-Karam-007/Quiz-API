@@ -23,7 +23,7 @@ exports.register = async (req, res) => {
         ) {
             throw new Error('all data requird');
         }
-        let user = await User.findOne({ email });
+        let user = await User.find({ email });
 
         if (user) throw new Error('Email already exists');
         // Throwing errors to interrupt the normal flow of the program
