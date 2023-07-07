@@ -66,8 +66,8 @@ exports.completeSignUp = async (req, res) => {
         if (!user) {
             throw new Error('This user does not exist');
         }
-        const newUser = await User.findOneAndUpdate(
-            { _id },
+        const newUser = await User.findByIdAndUpdate(
+            _id,
             {
                 username,
                 profileImageUrl,
@@ -96,7 +96,7 @@ exports.getSignedUpUser = async (req, res) => {
 exports.sendEmail = async (req, res) => {
     try {
         const code = Math.floor(Math.random() * 100000);
-        const user = await User.findOne({ _id: req.tokenValue._id });
+        const user = await User.find({ _id: req.tokenValue._id });
         const output = `
         <html>
 <head>
@@ -204,8 +204,8 @@ exports.sendEmail = async (req, res) => {
             if (error) {
                 res.status(500).send({ msg: 'Error sending email' });
             } else {
-                await User.findOneAndUpdate(
-                    { _id: req.tokenValue._id },
+                await User.findByIdAndUpdate(
+                    req.tokenValue._id,
                     { $set: { verifyCode: code } },
                     { new: true }
                 );
@@ -271,7 +271,7 @@ exports.login = async (req, res) => {
         const { email, password } = req.body;
         if (!email && !password) throw new Error('All data required ');
 
-        const user = await User.findOne({ email }).select('+password');
+        const user = await User.find({ email }).select('+password');
 
         if (!user) throw new Error('This email does not exist');
 
