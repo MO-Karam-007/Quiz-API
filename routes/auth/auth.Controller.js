@@ -23,9 +23,10 @@ exports.register = async (req, res) => {
         ) {
             throw new Error('all data requird');
         }
+
         let user = await User.find({ email });
 
-        if (user) throw new Error('Email already exists');
+        if (user.length > 0) throw new Error('Email already exists');
         // Throwing errors to interrupt the normal flow of the program
         if (password.length < 8) throw new Error('8 characters for password');
         if (role === 'instructor' && stCode != 777) {
