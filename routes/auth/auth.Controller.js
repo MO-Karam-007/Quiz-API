@@ -10,7 +10,7 @@ exports.register = async (req, res) => {
         let password = req.body.password;
 
         var stCode = req.body.stCode;
-        console.log(`LSTCODE`);
+
         // const code = Math.floor(Math.random() * 100000);
 
         if (
@@ -28,7 +28,7 @@ exports.register = async (req, res) => {
 
         if (user.length > 0) throw new Error('Email already exists');
         // Throwing errors to interrupt the normal flow of the program
-        if (password.length < 8) throw new Error('8 characters for password');
+        if (password.length < 8) throw new Error('8 characters for password'); ///Re
         if (role === 'instructor' && stCode != 777) {
             throw new Error("You don't have the correct key so try again");
         }
@@ -272,8 +272,9 @@ exports.login = async (req, res) => {
         const { email, password } = req.body;
         if (!email && !password) throw new Error('All data required ');
 
-        const user = await User.find({ email }).select('+password');
+        const user = await User.findOne({ email }).select('+password');
 
+        console.log(`user`, user);
         if (!user) throw new Error('This email does not exist');
 
         const isValidPassword = await bcrypt.compare(password, user.password);
