@@ -50,13 +50,44 @@ exports.getLastExam = async (req, res) => {
 exports.getById = async (req, res) => {
     try {
         const quizId = req.params.id;
-        const quiz = await Quiz.findById(quizId).populate('questions');
+        let quiz = await Quiz.findById(quizId).populate('questions');
+
         if (!quiz) {
             throw new Error('The quiz not found');
         }
 
         const token = generateToken(quiz._id);
 
+        console.log(
+            quiz.questions.map((ele) => {
+                return {
+                    _id: ele._id,
+                };
+            })
+        );
+
+        function shuffleArray(arr) {
+            var n = arr.length;
+            for (var i = n - 1; i > 0; i--) {
+                // Generate a random index between 0 and i (inclusive)
+                var j = Math.floor(Math.random() * (i + 1));
+                // Swap elements at indices i and j
+                var temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+            return arr;
+        }
+
+        quiz.questions = shuffleArray(quiz.questions);
+        console.log(
+            quiz.questions.map((ele) => {
+                return {
+                    _id: ele._id,
+                };
+            })
+        );
+        // console.log(quiz.questions);
         res.json({
             status: 'true',
             quiz,
