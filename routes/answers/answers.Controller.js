@@ -19,12 +19,13 @@ exports.getAnswers = async (req, res) => {
             throw new Error('Submition for students only');
         }
         //Check If submitted before
-        const submittedBefore = await Submit.findOne({
+        const submittedBefore = await Submit.find({
             quizId,
             userId,
         });
+        console.log(`submittedBefore`, submittedBefore);
 
-        if (submittedBefore) {
+        if (submittedBefore.length != 0) {
             throw new Error('You submitted this exam before');
         }
         // Take the answers
@@ -51,7 +52,7 @@ exports.getAnswers = async (req, res) => {
                 console.log(questions[i].correctAnswer == answer);
 
                 console.log(`----------------------- multiple_choice`);
-                questions[i].correctAnswer === answer ? score++ : score;
+                questions[i].correctAnswer.includes(answer) ? score++ : score;
                 console.log(`score`, score);
 
                 submitedAnswers.push(answer);
@@ -60,7 +61,7 @@ exports.getAnswers = async (req, res) => {
                 console.log(questions[i].correctAnswer == answer);
 
                 console.log(`----------------------- true_false`);
-                questions[i].correctAnswer === answer ? score++ : score;
+                questions[i].correctAnswer.includes(answer) ? score++ : score;
                 console.log(`score`, score);
 
                 submitedAnswers.push(answer);
