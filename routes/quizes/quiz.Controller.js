@@ -32,7 +32,7 @@ exports.getLastExam = async (req, res) => {
             const examCreationTime =
                 lastExam.createdAt || lastUpdateExam.updatedAt;
 
-            if (currentTime - examCreationTime > 3600 * 1000) {
+            if (currentTime - examCreationTime > 1800 * 1000) {
                 // 5 minutes in milliseconds
                 // Remove the exam from the database or take necessary actions
                 lastestExam = null;
@@ -149,7 +149,7 @@ exports.createQuiz = async (req, res) => {
             status: 'draft',
             category: 'quiz',
         });
-        // TO search is there is exams recently uploaded or not 
+        // TO search is there is exams recently uploaded or not
         if (category === 'mid_term') {
             if (midTermState.length != 0) {
                 throw new Error('There is one midterm in archive');
@@ -227,5 +227,3 @@ exports.getQuiz = async (req, res) => {
         });
     }
 };
-
-
