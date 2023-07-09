@@ -38,11 +38,8 @@ exports.getAnswers = async (req, res) => {
         //What is happining behind the scene to submit answers
         // Compere correct answers with correct answers
         const questions = quiz.questions;
-        const correct_answers = questions.map((value) => {
-            return {
-                correctAnswer: value.correctAnswer,
-            };
-        });
+
+        const correct_answers = questions.map((item) => item.correctAnswer);
 
         for (let i = 0; i < questions.length; i++) {
             const answer = answers[i];
@@ -52,7 +49,7 @@ exports.getAnswers = async (req, res) => {
                 console.log(questions[i].correctAnswer == answer);
 
                 console.log(`----------------------- multiple_choice`);
-                questions[i].correctAnswer.includes(answer) ? score++ : score;
+                correct_answers.includes(answer) ? score++ : score;
                 console.log(`score`, score);
 
                 submitedAnswers.push(answer);
@@ -61,7 +58,7 @@ exports.getAnswers = async (req, res) => {
                 console.log(questions[i].correctAnswer == answer);
 
                 console.log(`----------------------- true_false`);
-                questions[i].correctAnswer.includes(answer) ? score++ : score;
+                correct_answers.includes(answer) ? score++ : score;
                 console.log(`score`, score);
 
                 submitedAnswers.push(answer);
