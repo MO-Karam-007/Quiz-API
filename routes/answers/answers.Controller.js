@@ -19,15 +19,17 @@ exports.getAnswers = async (req, res) => {
             throw new Error('Submition for students only');
         }
         //Check If submitted before
-        const submittedBefore = await Submit.find({
+        const submittedBefore = await Submit.findOne({
             quizId,
             userId,
         });
         console.log(`submittedBefore`, submittedBefore);
 
-        if (submittedBefore.length != 0) {
+        console.log(`submittedBefore.length > 0`, submittedBefore);
+        console.log(submittedBefore == null);
+        if (submittedBefore != null)
             throw new Error('You submitted this exam before');
-        }
+
         // Take the answers
         const { answers } = req.body;
         const quiz = await Quiz.findById(quizId).populate('questions');
@@ -75,6 +77,7 @@ exports.getAnswers = async (req, res) => {
             score,
             answer: submitedAnswers,
         });
+
         // await Score.create({
         //     userId,
         //     quizId,

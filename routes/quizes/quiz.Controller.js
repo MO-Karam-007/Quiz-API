@@ -61,7 +61,7 @@ exports.getById = async (req, res) => {
         console.log(
             quiz.questions.map((ele) => {
                 return {
-                    _id: ele._id,
+                    question: ele.question.split(' ')[1],
                 };
             })
         );
@@ -83,7 +83,7 @@ exports.getById = async (req, res) => {
         console.log(
             quiz.questions.map((ele) => {
                 return {
-                    _id: ele._id,
+                    question: ele.question.split(' ')[1],
                 };
             })
         );

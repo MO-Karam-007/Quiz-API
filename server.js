@@ -1,7 +1,5 @@
 const http = require('http');
 
-
-
 // Connect to Database
 require('dotenv').config({});
 

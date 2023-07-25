@@ -271,7 +271,6 @@ exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
         if (!email && !password) throw new Error('All data required ');
-
         const user = await User.findOne({ email }).select('+password');
 
         console.log(`user`, user);

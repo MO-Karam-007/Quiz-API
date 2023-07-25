@@ -76,7 +76,8 @@ const userSchema = new mongoose.Schema({
         data: Buffer,
         contentType: String,
     },
-    counter: { type: Number },
+    counter: { type: Number,
+        select :false },
 });
 // userSchema.pre('save', async function () {
 //     if (this.role != 'instructor') {
