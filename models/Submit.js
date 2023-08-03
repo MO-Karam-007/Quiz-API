@@ -20,7 +20,7 @@ const submitSchame = new mongoose.Schema({
         default: 0,
     },
 });
-// submitSchame.index({ userId: 1, quizId: 1 }, { unique: true });
+
 const Submit = mongoose.model('Submit', submitSchame);
 
 module.exports = Submit;

@@ -24,6 +24,7 @@ exports.getAnswers = async (req, res) => {
             userId,
             quizId,
         });
+        console.log(`submittedBefore`, submittedBefore.length);
 
         // submittedBefore.map((el) => {
         //     if (el.userId == userId) {
@@ -31,7 +32,7 @@ exports.getAnswers = async (req, res) => {
         //     }
         // });
         console.log(`submittedBefore`, submittedBefore);
-        if (submittedBefore) {
+        if (submittedBefore != 0) {
             throw new Error('You have been submitted this before');
         }
 
@@ -81,16 +82,14 @@ exports.getAnswers = async (req, res) => {
         }
 
         console.log(`Lolo`);
-        const addSubmition = await Submit.findOneAndUpdate(
-            { userId, quizId },
-            {
-                userId,
-                quizId,
-                score,
-                answer: submitedAnswers,
-            },
-            { upsert: true, new: true }
-        );
+        const addSubmition = await Submit.create({
+            userId,
+            quizId,
+            score,
+            answer: submitedAnswers,
+        }).catch((error) => {
+            console.log(`Error 💥💥💥`, error);
+        });
         // console.log(`Lolo`);
 
         res.json({
