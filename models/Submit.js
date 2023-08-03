@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const submitSchame = new mongoose.Schema({
     answer: {
         type: [String],
-        default: 0,
     },
     userId: {
         ref: 'User',
@@ -21,7 +20,7 @@ const submitSchame = new mongoose.Schema({
         default: 0,
     },
 });
-submitSchame.index({ userId: 1, questionId: 1 }, { unique: true });
+// submitSchame.index({ userId: 1, quizId: 1 }, { unique: true });
 const Submit = mongoose.model('Submit', submitSchame);
 
 module.exports = Submit;

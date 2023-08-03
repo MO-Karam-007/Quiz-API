@@ -18,17 +18,26 @@ exports.getAnswers = async (req, res) => {
         if (userId.role != 'student') {
             throw new Error('Submition for students only');
         }
-        //Check If submitted before
-        const submittedBefore = await Submit.findOne({
-            quizId,
-            userId,
-        });
-        console.log(`submittedBefore`, submittedBefore);
 
-        console.log(`submittedBefore.length > 0`, submittedBefore);
-        console.log(submittedBefore == null);
-        if (submittedBefore != null)
-            throw new Error('You submitted this exam before');
+        //Check If submitted before
+        const submittedBefore = await Submit.find({
+            userId,
+            quizId,
+        });
+
+        // submittedBefore.map((el) => {
+        //     if (el.userId == userId) {
+        //         throw new Error('You have been submitted this before');
+        //     }
+        // });
+        console.log(`submittedBefore`, submittedBefore);
+        if (submittedBefore) {
+            throw new Error('You have been submitted this before');
+        }
+
+        // console.log(submittedBefore == null);
+        // if (submittedBefore != null)
+        //     throw new Error('You submitted this exam before');
 
         // Take the answers
         const { answers } = req.body;
@@ -71,18 +80,19 @@ exports.getAnswers = async (req, res) => {
             }
         }
 
-        const addSubmition = await Submit.create({
-            userId,
-            quizId,
-            score,
-            answer: submitedAnswers,
-        });
+        console.log(`Lolo`);
+        const addSubmition = await Submit.findOneAndUpdate(
+            { userId, quizId },
+            {
+                userId,
+                quizId,
+                score,
+                answer: submitedAnswers,
+            },
+            { upsert: true, new: true }
+        );
+        // console.log(`Lolo`);
 
-        // await Score.create({
-        //     userId,
-        //     quizId,
-        //     score,
-        // });
         res.json({
             addSubmition,
             correct_answers,
