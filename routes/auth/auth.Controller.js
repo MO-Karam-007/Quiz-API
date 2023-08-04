@@ -61,12 +61,15 @@ exports.register = async (req, res) => {
 
 exports.completeSignUp = async (req, res) => {
     try {
-        const { bio, profileImageUrl, username } = req.body;
+        const { bio, username } = req.body;
         const _id = req.tokenValue._id;
         const user = await User.findById(_id);
         if (!user) {
             throw new Error('This user does not exist');
         }
+
+        const profileImageUrl = req.file ? req.file.path : null;
+
         const newUser = await User.findByIdAndUpdate(
             _id,
             {

@@ -6,6 +6,7 @@ const { verfyToken } = require('../../middlewares/jwt');
 const multer = require('multer');
 
 // authRouter.route('/verify_user').get(authController.verify);
+const upload = multer({ dest: 'uploads/' });
 
 authRouter.route('/signup').post(authController.register);
 authRouter.route('/login').post(authController.login);
@@ -15,6 +16,10 @@ authRouter.route('/get_students').get(authController.getAllStd);
 authRouter
     .route('/complete_sign_up')
     .get(verfyToken, authController.getSignedUpUser)
-    .put(verfyToken, authController.completeSignUp);
+    .put(
+        upload.single('profileImage'),
+        verfyToken,
+        authController.completeSignUp
+    );
 
 module.exports = authRouter;
