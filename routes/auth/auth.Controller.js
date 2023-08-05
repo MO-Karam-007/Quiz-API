@@ -68,13 +68,13 @@ exports.completeSignUp = async (req, res) => {
             throw new Error('This user does not exist');
         }
 
-        const profileImageUrl = req.file ? req.file.path : null;
+        // const profileImageUrl = req.file ? req.file.path : null;
 
         const newUser = await User.findByIdAndUpdate(
             _id,
             {
                 username,
-                profileImageUrl,
+                profileImageUrl: req.file.path,
                 bio,
             },
             {
