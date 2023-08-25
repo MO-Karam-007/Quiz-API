@@ -74,7 +74,7 @@ exports.completeSignUp = async (req, res) => {
             _id,
             {
                 username,
-                profileImageUrl: req.file.path,
+                // profileImageUrl: req.file.path,
                 bio,
             },
             {
