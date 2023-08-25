@@ -63,6 +63,8 @@ exports.completeSignUp = async (req, res) => {
     try {
         const { bio, profileImageUrl, username } = req.body;
         const _id = req.tokenValue._id;
+        console.log(`path : `, __dirname);
+
         const user = await User.findById(_id);
         if (!user) {
             throw new Error('This user does not exist');
@@ -74,14 +76,13 @@ exports.completeSignUp = async (req, res) => {
             _id,
             {
                 username,
-                profileImageUrl: fs.readFileSync(req.body.profileImageUrl),
+                // profileImageUrl: fs.readFileSync(req.body.profileImageUrl),
                 bio,
             },
             {
                 new: true,
             }
         );
-        console.log(`path : `, __dirname);
         res.json({
             newUser,
         });
