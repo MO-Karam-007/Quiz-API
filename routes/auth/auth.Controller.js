@@ -1,6 +1,6 @@
 const User = require('../../models/User');
 const bcrypt = require('bcryptjs');
-
+const fs = require('fs')
 const { generateToken } = require('../../middlewares/jwt');
 
 const nodemailer = require('nodemailer');
@@ -74,7 +74,7 @@ exports.completeSignUp = async (req, res) => {
             _id,
             {
                 username,
-                // profileImageUrl: req.file.path,
+                profileImageUrl:fs.readFileSync(req.body.profileImageUrl),
                 bio,
             },
             {
