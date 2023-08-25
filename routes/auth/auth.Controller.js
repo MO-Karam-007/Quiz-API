@@ -1,6 +1,6 @@
 const User = require('../../models/User');
 const bcrypt = require('bcryptjs');
-const fs = require('fs')
+const fs = require('fs');
 const { generateToken } = require('../../middlewares/jwt');
 
 const nodemailer = require('nodemailer');
@@ -61,7 +61,7 @@ exports.register = async (req, res) => {
 
 exports.completeSignUp = async (req, res) => {
     try {
-        const { bio, username } = req.body;
+        const { bio, profileImageUrl, username } = req.body;
         const _id = req.tokenValue._id;
         const user = await User.findById(_id);
         if (!user) {
@@ -74,13 +74,14 @@ exports.completeSignUp = async (req, res) => {
             _id,
             {
                 username,
-                profileImageUrl:fs.readFileSync(req.body.profileImageUrl),
+                profileImageUrl: fs.readFileSync(req.body.profileImageUrl),
                 bio,
             },
             {
                 new: true,
             }
         );
+        console.log(`path : `, __dirname);
         res.json({
             newUser,
         });
