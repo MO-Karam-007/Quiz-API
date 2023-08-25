@@ -73,11 +73,10 @@ const userSchema = new mongoose.Schema({
         select: false,
     },
     profileImageUrl: {
-        data: Buffer,
+        data: String,
         contentType: String,
     },
-    counter: { type: Number,
-        select :false },
+    counter: { type: Number, select: false },
 });
 // userSchema.pre('save', async function () {
 //     if (this.role != 'instructor') {
