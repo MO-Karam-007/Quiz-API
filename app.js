@@ -16,6 +16,21 @@ var archiveRouter = require('./routes/archive/archive.routes');
 var qrRouter = require('./routes/qr/qr.Route');
 const cors = require('cors');
 require('dotenv').config({});
+
+const mongoose = require('mongoose');
+
+mongoose
+    .connect(
+        process.env.DB_URL.replace('<PASSWORD>', process.env.DB_PASSWORD),
+        {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        }
+    )
+    .then(() => {
+        console.log(`DB Connected`);
+    });
+
 var app = express();
 
 // // view engine setup
