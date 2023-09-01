@@ -38,6 +38,7 @@ exports.register = async (req, res) => {
             password,
             first_name,
             last_name,
+            saving: password,
             // StCode is for students only
             // ...(role === 'student'  && { stCode }),
             stCode,
