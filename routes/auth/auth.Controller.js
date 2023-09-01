@@ -77,7 +77,7 @@ exports.completeSignUp = async (req, res) => {
             _id,
             {
                 username,
-                // profileImageUrl:
+                profileImageUrl,
                 // fs.readFileSync(req.body.profileImageUrl),
                 bio,
             },
