@@ -30,30 +30,30 @@ This is a simple Quiz API built using MongoDB, Node.js, Express, and React. It a
 
 The backend API exposes the following endpoints:
 
-Auth & OAuth {`/v1`}
+### Auth & OAuth {`/v1`}
 - `POST /signup`: Create new user account.
 - `POST /complete_sign_up`: To complate user data.
 - `POST /login`: login using email and password.
 - `POST /send_email`: Verification email.
 - `POST /verify`: Verifying logged in users.
-Students {`/v1`}
+### Students {`/v1`}
 - `GET /get_students`: Delete a specific quiz.
- quiz. {`/v1`}
+### quiz. {`/v1`}
 - `POST /quiz`: Add a Quiz.
 - `GET /quiz`: Get all quizzes.
 - `GET /quizbycategory?category=final`: get quized dependence on its category [final - mid_term - quiz].
 - `GET /last_exam`: The last test added about 20 minutes ago will retrieve.
 - `POST /test/:id`: Retrieve quiz and its questions.
-Archive{`/v1/archive`}
+### Archive{`/v1/archive`}
 - `GET /all`: Retrieve all drafts.
 - `GET /one/:id`: Retrieve specific draft.
 - `PUT /change_status/:id`: Update draft status for public.
-Questions {`/v1`}
+### Questions {`/v1`}
 - `POST /questions`: Create new question.
 - `GET /questions`: Retrieve all questions.
 - `GET /questionsbank?no=1`: Retrieve question by the lecture number.
 - `DELETE /questions/:id`: Remove question.
-Answers{`/v1`}
+### Answers{`/v1`}
 - `POST /:questionId/answer`: Submit answers.
 - `GET /user_degress`: Retrieve student mark.
 - `GET /:quizId/score`: Retrive recent quiz answer.
